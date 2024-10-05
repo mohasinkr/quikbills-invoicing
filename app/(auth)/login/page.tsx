@@ -9,7 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 import authImage from "/public/images/auth-left.png";
 
 export const metadata: Metadata = {
-  title: "Authentication",
+  title: "Login to quikBills Invoicing",
   description: "Authentication forms built using the components.",
 };
 
@@ -17,13 +17,13 @@ export default function LoginPage() {
   return (
     <div className="container relative hidden flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link
-        href="/examples/authentication"
+        href="/signup"
         className={cn(
-          buttonVariants({ variant: "ghost" }),
+          buttonVariants({variant: "default"}),
           "absolute right-4 top-4 md:right-8 md:top-8",
         )}
       >
-        Login
+        Signup
       </Link>
       <Image src={authImage} alt="Authentication" className="" />
       <div className="lg:p-8">
@@ -36,7 +36,7 @@ export default function LoginPage() {
               Enter your email below to create your account
             </p>
           </div>
-          <UserAuthForm />
+          <UserAuthForm context="login" />
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
             <Link

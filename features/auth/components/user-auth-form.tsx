@@ -3,29 +3,35 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { Loader } from "lucide-react";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { signup } from "../actions/signup";
+import { login } from "../actions/login";
+import { handleGithubAuth } from "../actions/login-provider";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
+  context?: "login" | "signup";
+}
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+export function UserAuthForm({
+  context = "login",
+  className,
+  ...props
+}: UserAuthFormProps) {
+  // const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+  function onSubmit(data: FormData) {
+    if (context === "login") {
+      login(data);
+    } else {
+      signup(data);
+    }
   }
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <form className="space-y-5">
         <div className="grid gap-5">
           <div className="grid gap-1">
             <Label className="mb-2" htmlFor="email">
@@ -33,38 +39,58 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </Label>
             <Input
               id="email"
+              name="email"
               placeholder="name@example.com"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading}
             />
           </div>
-          <Button disabled={isLoading}>
-            {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-            Sign In with Email
+          <div className="grid gap-1">
+            <Label className="mb-2" htmlFor="password">
+              Password
+            </Label>
+            <Input
+              id="password"
+              name="password"
+              placeholder="******"
+              type="password"
+              autoCapitalize="none"
+            />
+          </div>
+          <Button
+            formAction={onSubmit}
+            // disabled={isLoading}
+          >
+            {/* {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />} */}
+            Continue
           </Button>
         </div>
-      </form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
         </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
-      </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
+        <Button
+          variant="outline"
+          // disabled={isLoading}
+          className="w-full"
+          formAction={() => handleGithubAuth()}
+        >
+          {/* {isLoading ? (
           <Loader className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
+        ) : ( */}
           <GitHubLogoIcon className="mr-2 h-4 w-4" />
-        )}{" "}
-        GitHub
-      </Button>
-    </div>
+          {/* )}{" "} */}
+          GitHub
+        </Button>
+      </form>
   );
 }

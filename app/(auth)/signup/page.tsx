@@ -17,9 +17,9 @@ export default function SignUpPage() {
   return (
     <div className="container relative flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link
-        href="/examples/authentication"
+        href="/login"
         className={cn(
-          buttonVariants({ variant: "ghost" }),
+          buttonVariants({ variant: "default" }),
           "absolute right-4 top-4 md:right-8 md:top-8",
         )}
       >
@@ -36,7 +36,7 @@ export default function SignUpPage() {
               Enter your email below to create your account
             </p>
           </div>
-          <UserAuthForm />
+          <UserAuthForm context="signup" />
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
             <Link
