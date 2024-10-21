@@ -3,7 +3,7 @@
 import { logout } from "@/features/auth/actions/logout";
 
 const LogoutButton = () => {
-  return <button onClick={()=>logout()}>Logout</button>;
+  return <button onClick={() => logout()}>Logout</button>;
 };
 
 export default LogoutButton;

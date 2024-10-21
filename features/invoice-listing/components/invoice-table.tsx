@@ -16,7 +16,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select";
 
 import { PlusIcon, EditIcon, CheckIcon, XIcon } from "lucide-react";
+import { Invoice, InvoiceWithCustomer } from "@/schema/types";
 
 // type Invoice = {
 //   id: number;
@@ -38,36 +39,36 @@ import { PlusIcon, EditIcon, CheckIcon, XIcon } from "lucide-react";
 //   status: "Paid" | "Unpaid" | "Overdue";
 // };
 
-export default function InvoiceTable({invoices}: ) {
-  const [invoices, setInvoices] = useState<Invoice[]>([
-    {
-      id: 1,
-      invoiceNumber: "INV-001",
-      clientName: "Acme Corp",
-      description: "Web Development",
-      dueDate: "2023-12-31",
-      totalAmount: 1000,
-      status: "Unpaid",
-    },
-    {
-      id: 2,
-      invoiceNumber: "INV-002",
-      clientName: "Globex Inc",
-      description: "UI/UX Design",
-      dueDate: "2023-12-15",
-      totalAmount: 1500,
-      status: "Paid",
-    },
-    {
-      id: 3,
-      invoiceNumber: "INV-003",
-      clientName: "Umbrella LLC",
-      description: "Server Maintenance",
-      dueDate: "2023-11-30",
-      totalAmount: 2000,
-      status: "Overdue",
-    },
-  ]);
+export default function InvoiceTable({ invoices }: { invoices: InvoiceWithCustomer[] }) {
+  // const [invoices, setInvoices] = useState<Invoice[]>([
+  //   {
+  //     id: 1,
+  //     invoiceNumber: "INV-001",
+  //     clientName: "Acme Corp",
+  //     description: "Web Development",
+  //     dueDate: "2023-12-31",
+  //     totalAmount: 1000,
+  //     status: "Unpaid",
+  //   },
+  //   {
+  //     id: 2,
+  //     invoiceNumber: "INV-002",
+  //     clientName: "Globex Inc",
+  //     description: "UI/UX Design",
+  //     dueDate: "2023-12-15",
+  //     totalAmount: 1500,
+  //     status: "Paid",
+  //   },
+  //   {
+  //     id: 3,
+  //     invoiceNumber: "INV-003",
+  //     clientName: "Umbrella LLC",
+  //     description: "Server Maintenance",
+  //     dueDate: "2023-11-30",
+  //     totalAmount: 2000,
+  //     status: "Overdue",
+  //   },
+  // ]);
 
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -87,16 +88,16 @@ export default function InvoiceTable({invoices}: ) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingInvoice) {
-      setInvoices(
-        invoices.map((inv) =>
-          inv.id === editingInvoice.id ? editingInvoice : inv
-        )
-      );
+      // setInvoices(
+      //   invoices.map((inv) =>
+      //     inv.id === editingInvoice.id ? editingInvoice : inv
+      //   )
+      // );
     } else {
-      setInvoices([
-        ...invoices,
-        { ...editingInvoice!, id: invoices.length + 1 },
-      ]);
+      // setInvoices([
+      //   ...invoices,
+      //   { ...editingInvoice!, id: invoices.length + 1 },
+      // ]);
     }
     setEditingInvoice(null);
     setIsDialogOpen(false);
@@ -124,19 +125,17 @@ export default function InvoiceTable({invoices}: ) {
     id: number,
     newStatus: "Paid" | "Unpaid" | "Overdue"
   ) => {
-    setInvoices(
-      invoices.map((inv) =>
-        inv.id === id ? { ...inv, status: newStatus } : inv
-      )
-    );
+    // setInvoices(
+    //   invoices.map((inv) =>
+    //     inv.id === id ? { ...inv, status: newStatus } : inv
+    //   )
+    // );
   };
 
   return (
     <div className="container mx-auto p-4">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-primary">
-          QuikBills Invoicing
-        </h1>
+        <h1 className="text-3xl font-bold text-primary">QuikBills Invoicing</h1>
       </header>
 
       <div className="mb-4">
@@ -160,17 +159,17 @@ export default function InvoiceTable({invoices}: ) {
         <TableBody>
           {invoices.map((invoice) => (
             <TableRow key={invoice.id}>
-              <TableCell>{invoice.invoiceNumber}</TableCell>
-              <TableCell>{invoice.clientName}</TableCell>
+              <TableCell>{invoice.id}</TableCell>
+              <TableCell>{invoice.customers.name}</TableCell>
               <TableCell>{invoice.description}</TableCell>
-              <TableCell>{invoice.dueDate}</TableCell>
-              <TableCell>${invoice.totalAmount.toFixed(2)}</TableCell>
+              <TableCell>{invoice.due_date}</TableCell>
+              <TableCell>${invoice.amount}</TableCell>
               <TableCell>
                 <span
                   className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                    invoice.status === "Paid"
+                    invoice.status === "paid"
                       ? "bg-green-100 text-green-800"
-                      : invoice.status === "Unpaid"
+                      : invoice.status === "unpaid"
                         ? "bg-yellow-100 text-yellow-800"
                         : "bg-red-100 text-red-800"
                   }`}
@@ -221,7 +220,7 @@ export default function InvoiceTable({invoices}: ) {
               <Input
                 id="invoiceNumber"
                 name="invoiceNumber"
-                value={editingInvoice?.invoiceNumber || ""}
+                value={editingInvoice?.id || ""}
                 onChange={handleInputChange}
                 required
               />
@@ -231,7 +230,7 @@ export default function InvoiceTable({invoices}: ) {
               <Input
                 id="clientName"
                 name="clientName"
-                value={editingInvoice?.clientName || ""}
+                value={editingInvoice?.customer_id || ""}
                 onChange={handleInputChange}
                 required
               />
@@ -252,7 +251,7 @@ export default function InvoiceTable({invoices}: ) {
                 id="dueDate"
                 name="dueDate"
                 type="date"
-                value={editingInvoice?.dueDate || ""}
+                value={editingInvoice?.due_date || ""}
                 onChange={handleInputChange}
                 required
               />
@@ -263,7 +262,7 @@ export default function InvoiceTable({invoices}: ) {
                 id="totalAmount"
                 name="totalAmount"
                 type="number"
-                value={editingInvoice?.totalAmount || ""}
+                value={editingInvoice?.amount || ""}
                 onChange={handleInputChange}
                 required
               />
