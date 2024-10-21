@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "generate-types": "supabase gen types --lang=typescript --project-id jrwllainxczurxdplyht --schema public > schema/schema.ts",
     "format": "prettier --write ."
   },
   "dependencies": {
@@ -38,6 +39,7 @@
     "eslint-config-prettier": "^9.1.0",
     "postcss": "^8",
     "prettier": "^3.3.3",
+    "supabase": "^1.204.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
