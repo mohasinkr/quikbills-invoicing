@@ -1,7 +1,4 @@
-import {
-  Payment,
-  columns,
-} from "@/features/invoice-listing/components/columns";
+import { Payment, columns } from "@/features/invoices/components/columns";
 import { DataTable } from "@/components/ui/data-table";
 
 async function getData(): Promise<Payment[]> {

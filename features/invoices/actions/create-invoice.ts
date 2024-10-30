@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { Invoice } from "@/schema/types";
 
-export const createInvoice = async (invoice: Omit<Invoice, "id">) => {
+export const createInvoice = async (invoice: Omit<Invoice, "id" | "owner_id">) => {
   const supabase = createClient();
   const { data, error } = await supabase.from("invoices").insert(invoice);
   if (error) {

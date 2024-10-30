@@ -1,10 +1,10 @@
-import { Database } from "./schema";
+import { Database, Tables } from "./schema";
 
-export type Invoice = Database["public"]["Tables"]["invoices"]["Row"];
-export type Customer = Database["public"]["Tables"]["customers"]["Row"];
-export type Payments = Database["public"]["Tables"]["payments"]["Row"];
+export type Invoice = Tables<"invoices">;
+export type Customer = Tables<"customers">;
+export type Payments = Tables<"payments">;
 
 
 export interface InvoiceWithCustomer extends Invoice {
-  customers: Customer;
+  customers: Tables<"customers">;
 }
