@@ -23,7 +23,6 @@ const CreateInvoiceForm = () => {
     });
 
     console.log(data);
-    
   };
 
   return (

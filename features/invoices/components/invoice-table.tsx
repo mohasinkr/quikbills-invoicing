@@ -1,11 +1,10 @@
-
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import { InvoiceWithCustomer } from "@/schema/types";
 import InvoiceStatusBadge from "./invoice-status-badge";
