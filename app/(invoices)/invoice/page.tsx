@@ -1,4 +1,5 @@
-import InvoiceTable from "@/features/invoices/components/invoice-table";
+import InvoiceListing from "@/features/invoices/components/invoice-listing";
+import InvoiceTable from "@/features/invoices/components/invoice-listing";
 import { InvoiceWithCustomer } from "@/schema/types";
 import { createClient } from "@/utils/supabase/server";
 
@@ -13,7 +14,7 @@ const InvoicePage = async () => {
     return <div>No invoices found</div>;
   }
 
-  return <InvoiceTable invoices={invoices} />;
+  return <InvoiceListing invoices={invoices} />;
 };
 
 export default InvoicePage;

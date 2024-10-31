@@ -23,13 +23,14 @@ const CreateInvoiceForm = () => {
     });
 
     console.log(data);
+    
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <Label htmlFor="clientName">Customer Name</Label>
-        <Input id="clientName" name="clientName" required />
+        <Label htmlFor="customer_name">Customer Name</Label>
+        <Input id="customer_id " name="clientName" required />
       </div>
       <div>
         <Label htmlFor="description">Item Description</Label>
