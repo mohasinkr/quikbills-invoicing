@@ -9,8 +9,12 @@ import {
 import { PlusIcon } from "lucide-react";
 import React from "react";
 import CreateInvoiceForm from "./create-invoice-form";
+import { getCustomers } from "@/features/customers/actions/get-customers";
 
-const CreateInvoiceDialog = () => {
+const CreateInvoiceDialog = async () => {
+  // mapping the customer names to an array
+  const customerNames = (await getCustomers("name")).map((customer) => customer.name);
+
   return (
     <Dialog>
       <DialogTrigger asChild className="mb-4">
@@ -22,7 +26,7 @@ const CreateInvoiceDialog = () => {
         <DialogHeader>
           <DialogTitle>Create Invoice</DialogTitle>
         </DialogHeader>
-        <CreateInvoiceForm />
+        <CreateInvoiceForm customerNames={customerNames} />
       </DialogContent>
     </Dialog>
   );

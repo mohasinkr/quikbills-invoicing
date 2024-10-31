@@ -1,3 +1,6 @@
+"use client";
+
+import { AutoComplete } from "@/components/ui/autocomplete";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,9 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import React from "react";
 
-const CreateInvoiceForm = () => {
+const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -26,10 +29,15 @@ const CreateInvoiceForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form className="space-y-4">
       <div>
         <Label htmlFor="customer_name">Customer Name</Label>
-        <Input id="customer_id " name="clientName" required />
+        {/* <Input id="customer_id " name="clientName" required /> */}
+        <AutoComplete
+          hideIcon
+          options={customerNames}
+          emptyMessage="Add kevin?"
+        />
       </div>
       <div>
         <Label htmlFor="description">Item Description</Label>
@@ -73,7 +81,7 @@ const CreateInvoiceForm = () => {
           </SelectContent>
         </Select>
       </div>
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="w-full" onClick={handleSubmit}>
         Create Invoice
       </Button>
     </form>

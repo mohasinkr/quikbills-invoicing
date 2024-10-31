@@ -1,5 +1,3 @@
-"use client";
-
 import { InvoiceWithCustomer } from "@/schema/types";
 import CreateInvoiceDialog from "./create-invoice-dialog";
 import InvoiceTable from "./invoice-table";
