@@ -12,7 +12,7 @@ const InvoiceStatusBadge = ({ status }: { status: string }) => {
 
   return (
     <span
-      className={`px-2 py-1 rounded-full text-xs font-semibold uppercase ${statusClass}`}
+      className={`rounded-full px-2 py-1 text-xs font-semibold uppercase ${statusClass}`}
     >
       {status}
     </span>

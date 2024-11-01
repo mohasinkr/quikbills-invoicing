@@ -14,6 +14,9 @@ const InvoicePage = async () => {
     return <div>No invoices found</div>;
   }
 
+  const componentType = typeof window === "undefined" ? "server" : "client";
+  console.log(componentType, "::invoice index page");
+
   return <InvoiceListing invoices={invoices} />;
 };
 

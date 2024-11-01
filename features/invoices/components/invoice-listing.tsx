@@ -7,6 +7,8 @@ export default function InvoiceListing({
 }: {
   invoices: InvoiceWithCustomer[];
 }) {
+  const componentType = typeof window === "undefined" ? "server" : "client";
+  console.log(componentType, "::invoice listing");
   return (
     <div className="container mx-auto p-4">
       <header className="mb-8">

@@ -106,7 +106,7 @@ export const AutoComplete = ({
       <div className="relative mt-1">
         <div
           className={cn(
-            "animate-in fade-in-0 zoom-in-95 absolute top-0 z-10 w-full rounded-xl bg-white outline-none",
+            "absolute top-0 z-10 w-full rounded-xl bg-white outline-none animate-in fade-in-0 zoom-in-95",
             isOpen ? "block" : "hidden"
           )}
         >
@@ -144,7 +144,7 @@ export const AutoComplete = ({
               </CommandGroup>
             ) : null}
             {!isLoading ? (
-              <CommandPrimitive.Empty className="cursor-pointer text-gray-600 rounded-sm px-2 py-3 text-center text-sm">
+              <CommandPrimitive.Empty className="cursor-pointer rounded-sm px-2 py-3 text-center text-sm text-gray-600">
                 Add {inputValue}?
               </CommandPrimitive.Empty>
             ) : null}
