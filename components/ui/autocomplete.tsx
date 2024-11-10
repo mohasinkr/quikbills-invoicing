@@ -1,9 +1,8 @@
 "use client";
 
 import { Command as CommandPrimitive } from "cmdk";
-import { useState, useRef, useCallback, type KeyboardEvent } from "react";
+import { useRef, useCallback, type KeyboardEvent, useState } from "react";
 import { Skeleton } from "./skeleton";
-
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -12,35 +11,59 @@ import {
   CommandItem,
   CommandList,
 } from "./command";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { UseFormReturn } from "react-hook-form";
 
 type AutoCompleteProps = {
+  form: UseFormReturn<any>;
+  name: string;
   hideIcon?: boolean;
   options: string[];
-  emptyMessage: string;
-  value?: string[];
-  onValueChange?: (value: string) => void;
+  emptyMessage?: string;
   isLoading?: boolean;
   disabled?: boolean;
   placeholder?: string;
 };
 
 export const AutoComplete = ({
+  form,
+  name,
   hideIcon,
   options,
   placeholder,
-  value,
-  onValueChange,
   disabled,
   isLoading = false,
 }: AutoCompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [isOpen, setOpen] = useState(false);
-  const [selected, setSelected] = useState<string>("");
-  const [inputValue, setInputValue] = useState<string>("");
+
+  // const handleKeyDown = useCallback(
+  //   (event: KeyboardEvent<HTMLDivElement>, field: any) => {
+  //     const input = inputRef.current;
+  //     if (!input) return;
+
+  //     if (event.key === "Enter" && input.value !== "") {
+  //       const optionToSelect = options.find((option) => option === input.value);
+  //       if (optionToSelect) {
+  //         field.onChange(optionToSelect);
+  //       }
+  //     }
+
+  //     if (event.key === "Escape") {
+  //       input.blur();
+  //     }
+  //   },
+  //   [options]
+  // );
 
   const handleKeyDown = useCallback(
-    (event: KeyboardEvent<HTMLDivElement>) => {
+    (event: KeyboardEvent<HTMLDivElement>, field: any) => {
       const input = inputRef.current;
       if (!input) {
         return;
@@ -55,8 +78,7 @@ export const AutoComplete = ({
       if (event.key === "Enter" && input.value !== "") {
         const optionToSelect = options.find((option) => option === input.value);
         if (optionToSelect) {
-          setSelected(optionToSelect);
-          onValueChange?.(optionToSelect);
+          field.onChange(optionToSelect);
         }
       }
 
@@ -64,93 +86,100 @@ export const AutoComplete = ({
         input.blur();
       }
     },
-    [isOpen, options, onValueChange]
+    [isOpen, options]
   );
 
   const handleBlur = useCallback(() => {
     setOpen(false);
-    setInputValue(selected);
-  }, [selected]);
+  }, []);
 
   const handleSelectOption = useCallback(
-    (selectedOption: string) => {
-      setInputValue(selectedOption);
-
-      setSelected(selectedOption);
-      onValueChange?.(selectedOption);
-
-      // This is a hack to prevent the input from being focused after the user selects an option
-      // We can call this hack: "The next tick"
+    (selectedOption: string, field: any) => {
+      field.onChange(selectedOption);
       setTimeout(() => {
         inputRef?.current?.blur();
       }, 0);
     },
-    [onValueChange]
+    []
   );
 
   return (
-    <CommandPrimitive onKeyDown={handleKeyDown}>
-      <div>
-        <CommandInput
-          hideIcon={hideIcon}
-          ref={inputRef}
-          value={inputValue}
-          onValueChange={isLoading ? undefined : setInputValue}
-          onBlur={handleBlur}
-          onFocus={() => setOpen(true)}
-          placeholder={placeholder}
-          disabled={disabled}
-          className="text-base"
-        />
-      </div>
-      <div className="relative mt-1">
-        <div
-          className={cn(
-            "absolute top-0 z-10 w-full rounded-xl bg-white outline-none animate-in fade-in-0 zoom-in-95",
-            isOpen ? "block" : "hidden"
-          )}
-        >
-          <CommandList className="rounded-lg ring-1 ring-slate-200">
-            {isLoading ? (
-              <CommandPrimitive.Loading>
-                <div className="p-1">
-                  <Skeleton className="h-8 w-full" />
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className="flex flex-col">
+          <FormControl>
+            <CommandPrimitive
+              onKeyDown={(event) => handleKeyDown(event, field)}
+              shouldFilter={false}
+            >
+              <div>
+                <CommandInput
+                  hideIcon={hideIcon}
+                  ref={inputRef}
+                  value={field.value || ""}
+                  onValueChange={isLoading ? undefined : field.onChange}
+                  onBlur={handleBlur}
+                  onFocus={() => setOpen(true)}
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  className="text-base"
+                />
+              </div>
+              <div className="relative mt-1">
+                <div
+                  className={cn(
+                    "absolute top-0 z-10 w-full rounded-xl bg-white outline-none animate-in fade-in-0 zoom-in-95",
+                    isOpen ? "block" : "hidden"
+                  )}
+                >
+                  <CommandList className="rounded-lg ring-1 ring-slate-200">
+                    {isLoading ? (
+                      <CommandPrimitive.Loading>
+                        <div className="p-1">
+                          <Skeleton className="h-8 w-full" />
+                        </div>
+                      </CommandPrimitive.Loading>
+                    ) : null}
+                    {options.length > 0 && !isLoading ? (
+                      <CommandGroup>
+                        {options.map((option) => {
+                          const isSelected = field.value === option;
+                          return (
+                            <CommandItem
+                              key={option}
+                              value={option}
+                              onMouseDown={(event) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                              }}
+                              onSelect={() => handleSelectOption(option, field)}
+                              className={cn(
+                                "flex w-full items-center gap-2",
+                                !isSelected ? "pl-8" : null
+                              )}
+                            >
+                              {isSelected ? <Check className="w-4" /> : null}
+                              {option}
+                            </CommandItem>
+                          );
+                        })}
+                      </CommandGroup>
+                    ) : null}
+                    {!isLoading ? (
+                      <CommandPrimitive.Empty className="cursor-pointer rounded-sm px-2 py-3 text-center text-sm text-gray-600">
+                        Add {field.value}?
+                      </CommandPrimitive.Empty>
+                    ) : null}
+                  </CommandList>
                 </div>
-              </CommandPrimitive.Loading>
-            ) : null}
-            {options.length > 0 && !isLoading ? (
-              <CommandGroup>
-                {options.map((option) => {
-                  const isSelected = selected === option;
-                  return (
-                    <CommandItem
-                      key={option}
-                      value={option}
-                      onMouseDown={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                      }}
-                      onSelect={() => handleSelectOption(option)}
-                      className={cn(
-                        "flex w-full items-center gap-2",
-                        !isSelected ? "pl-8" : null
-                      )}
-                    >
-                      {isSelected ? <Check className="w-4" /> : null}
-                      {option}
-                    </CommandItem>
-                  );
-                })}
-              </CommandGroup>
-            ) : null}
-            {!isLoading ? (
-              <CommandPrimitive.Empty className="cursor-pointer rounded-sm px-2 py-3 text-center text-sm text-gray-600">
-                Add {inputValue}?
-              </CommandPrimitive.Empty>
-            ) : null}
-          </CommandList>
-        </div>
-      </div>
-    </CommandPrimitive>
+              </div>
+            </CommandPrimitive>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 };

@@ -53,7 +53,6 @@ export default async function Home() {
           <a
             className="flex h-10 items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm transition-colors hover:border-transparent hover:bg-[#f2f2f2] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] sm:h-12 sm:min-w-44 sm:px-5 sm:text-base"
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
             rel="noopener noreferrer"
           >
             Read our docs
@@ -93,7 +92,7 @@ export default async function Home() {
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          href="/invoice"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -104,7 +103,7 @@ export default async function Home() {
             width={16}
             height={16}
           />
-          Go to nextjs.org →
+          Go to Invoices page →
         </a>
       </footer>
     </div>

@@ -2,7 +2,6 @@
 
 import { AutoComplete } from "@/components/ui/autocomplete";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import MoneyInput from "@/components/ui/money-input";
 import {
@@ -16,10 +15,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import DatePicker from "@/components/ui/date-picker";
+import { format } from "date-fns";
 
 const schema = z.object({
   value: z.coerce.number().min(0.01, "Required"),
+  description: z.string().min(1, "Required"),
+  dueDate: z.date().transform((date) => format(date, "dd-MM-yyyy")),
+  status: z.enum(["Paid", "Unpaid", "Overdue"]),
+  customerName: z.string().min(1, "Required"),
 });
 
 const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
@@ -27,44 +39,48 @@ const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
     resolver: zodResolver(schema),
     defaultValues: {
       value: 0,
+      description: "",
+      dueDate: new Date().toISOString(),
+      status: "Unpaid",
+      customerName: "",
     },
     mode: "onTouched",
   });
 
-  function onSubmit(values: z.infer<typeof schema>) {
-    // handle submit
+  async function onSubmit(values: z.infer<typeof schema>) {
+    console.table(values);
+    // const response = await createInvoice(values);
   }
 
   return (
     <Form {...form}>
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="space-y-2">
           <Label htmlFor="customer_name">Customer Name</Label>
           {/* <Input id="customer_id " name="clientName" required /> */}
           <AutoComplete
+            name="customerName"
+            form={form}
             hideIcon
             options={customerNames}
             emptyMessage="Add kevin?"
           />
         </div>
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Item Description</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Enter item description" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <div className="space-y-2">
-          <Label htmlFor="description">Item Description</Label>
-          <Textarea
-            id="description"
-            name="description"
-            // value={editingInvoice?.description || ""}
-            required
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="dueDate">Due Date</Label>
-          <Input
-            id="dueDate"
-            name="dueDate"
-            type="date"
-            // value={editingInvoice?.due_date || ""}
-            required
-          />
+          <DatePicker form={form} name="dueDate" label="Due Date" />
         </div>
         <div className="space-y-2">
           <Label htmlFor="totalAmount">Total Amount</Label>
