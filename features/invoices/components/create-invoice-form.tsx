@@ -27,8 +27,8 @@ import DatePicker from "@/components/ui/date-picker";
 import { format } from "date-fns";
 
 const schema = z.object({
-  value: z.coerce.number().min(0.01, "Required"),
-  description: z.string().min(1, "Required"),
+  amount: z.coerce.number().min(0.01, "Amount is required"),
+  description: z.string().min(1, "Item description is required"),
   dueDate: z.date().transform((date) => format(date, "dd-MM-yyyy")),
   status: z.enum(["Paid", "Unpaid", "Overdue"]),
   customerName: z.string().min(1, "Required"),
@@ -38,13 +38,13 @@ const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      value: 0,
+      amount: 0,
       description: "",
       dueDate: new Date().toISOString(),
       status: "Unpaid",
       customerName: "",
     },
-    mode: "onTouched",
+    mode: "onSubmit",
   });
 
   async function onSubmit(values: z.infer<typeof schema>) {
@@ -87,15 +87,15 @@ const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
           <MoneyInput
             form={form}
             label="Amount"
-            name="value"
+            name="amount"
             placeholder="Enter the amount"
           />
         </div>
         <div className="space-y-2">
           <Label htmlFor="status">Status</Label>
-          <Select name="status">
+          <Select name="status" defaultValue="Unpaid">
             <SelectTrigger>
-              <SelectValue placeholder="Select status" />
+              <SelectValue  />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="Paid">Paid</SelectItem>
