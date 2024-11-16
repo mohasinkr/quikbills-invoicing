@@ -24,12 +24,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import DatePicker from "@/components/ui/date-picker";
-import { format } from "date-fns";
+import { Input } from "@/components/ui/input";
 
 const schema = z.object({
-  amount: z.coerce.number().min(0.01, "Amount is required"),
+  unit_price: z.coerce.number().min(0.0, "Amount is required"),
   description: z.string().min(1, "Item description is required"),
-  dueDate: z.date().transform((date) => format(date, "dd-MM-yyyy")),
+  quantity: z.coerce.number().min(1, "Atleast one item is required"),
+  total: z.coerce.number().min(0.0, "Total amount is required"),
+  dueDate: z.date().transform((date) => date.toISOString()),
   status: z.enum(["Paid", "Unpaid", "Overdue"]),
   customerName: z.string().min(1, "Required"),
 });
@@ -38,8 +40,10 @@ const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      amount: 0,
+      unit_price: 0,
       description: "",
+      quantity: 1,
+      total: 0,
       dueDate: new Date().toISOString(),
       status: "Unpaid",
       customerName: "",
@@ -55,9 +59,8 @@ const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="space-y-2">
+        <div>
           <Label htmlFor="customer_name">Customer Name</Label>
-          {/* <Input id="customer_id " name="clientName" required /> */}
           <AutoComplete
             name="customerName"
             form={form}
@@ -66,6 +69,7 @@ const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
             emptyMessage="Add kevin?"
           />
         </div>
+
         <FormField
           control={form.control}
           name="description"
@@ -79,23 +83,55 @@ const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
             </FormItem>
           )}
         />
-        <div className="space-y-2">
-          <DatePicker form={form} name="dueDate" label="Due Date" />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="totalAmount">Total Amount</Label>
-          <MoneyInput
-            form={form}
-            label="Amount"
-            name="amount"
-            placeholder="Enter the amount"
-          />
-        </div>
-        <div className="space-y-2">
+
+        <FormField
+          control={form.control}
+          name="quantity"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Quantity</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  placeholder="Enter quantity"
+                  {...field}
+                  onChange={(e) => {
+                    form.setValue(
+                      "total",
+                      Number(e.target.value) * form.getValues("unit_price")
+                    );
+                    field.onChange(e);
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <DatePicker form={form} name="dueDate" label="Due Date" />
+
+        <MoneyInput form={form} label="Unit Price" name="unit_price" />
+
+        <FormField
+          control={form.control}
+          name="total"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Total Amount</FormLabel>
+              <FormControl>
+                <Input type="number" readOnly {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div>
           <Label htmlFor="status">Status</Label>
           <Select name="status" defaultValue="Unpaid">
             <SelectTrigger>
-              <SelectValue  />
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="Paid">Paid</SelectItem>
