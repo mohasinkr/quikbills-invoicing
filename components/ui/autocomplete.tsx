@@ -19,11 +19,16 @@ import {
 } from "@/components/ui/form";
 import { UseFormReturn } from "react-hook-form";
 
+type Option = {
+  name: string;
+  value: string;
+};
+
 type AutoCompleteProps = {
   form: UseFormReturn<any>;
   name: string;
   hideIcon?: boolean;
-  options: string[];
+  options: Option[];
   emptyMessage?: string;
   isLoading?: boolean;
   disabled?: boolean;
@@ -40,27 +45,11 @@ export const AutoComplete = ({
   isLoading = false,
 }: AutoCompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-
   const [isOpen, setOpen] = useState(false);
-
-  // const handleKeyDown = useCallback(
-  //   (event: KeyboardEvent<HTMLDivElement>, field: any) => {
-  //     const input = inputRef.current;
-  //     if (!input) return;
-
-  //     if (event.key === "Enter" && input.value !== "") {
-  //       const optionToSelect = options.find((option) => option === input.value);
-  //       if (optionToSelect) {
-  //         field.onChange(optionToSelect);
-  //       }
-  //     }
-
-  //     if (event.key === "Escape") {
-  //       input.blur();
-  //     }
-  //   },
-  //   [options]
-  // );
+  const [inputDisplay, setInputDisplay] = useState(() => {
+    const currentValue = form.getValues()[name];
+    return options.find((opt) => opt.value === currentValue)?.name || "";
+  });
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLDivElement>, field: any) => {
@@ -69,16 +58,17 @@ export const AutoComplete = ({
         return;
       }
 
-      // Keep the options displayed when the user is typing
       if (!isOpen) {
         setOpen(true);
       }
 
-      // This is not a default behaviour of the <input /> field
       if (event.key === "Enter" && input.value !== "") {
-        const optionToSelect = options.find((option) => option === input.value);
+        const optionToSelect = options.find(
+          (option) => option.name.toLowerCase() === input.value.toLowerCase()
+        );
         if (optionToSelect) {
-          field.onChange(optionToSelect);
+          field.onChange(optionToSelect.value);
+          setInputDisplay(optionToSelect.name);
         }
       }
 
@@ -94,14 +84,22 @@ export const AutoComplete = ({
   }, []);
 
   const handleSelectOption = useCallback(
-    (selectedOption: string, field: any) => {
-      field.onChange(selectedOption);
+    (selectedValue: string, field: any) => {
+      const selectedOption = options.find((opt) => opt.value === selectedValue);
+      if (selectedOption) {
+        field.onChange(selectedOption.value);
+        setInputDisplay(selectedOption.name);
+      }
       setTimeout(() => {
         inputRef?.current?.blur();
       }, 0);
     },
-    []
+    [options]
   );
+
+  const handleInputChange = (value: string, field: any) => {
+    setInputDisplay(value);
+  };
 
   return (
     <FormField
@@ -118,8 +116,10 @@ export const AutoComplete = ({
                 <CommandInput
                   hideIcon={hideIcon}
                   ref={inputRef}
-                  value={field.value || ""}
-                  onValueChange={isLoading ? undefined : field.onChange}
+                  value={inputDisplay}
+                  onValueChange={(value) =>
+                    isLoading ? undefined : handleInputChange(value, field)
+                  }
                   onBlur={handleBlur}
                   onFocus={() => setOpen(true)}
                   placeholder={placeholder}
@@ -145,23 +145,25 @@ export const AutoComplete = ({
                     {options.length > 0 && !isLoading ? (
                       <CommandGroup>
                         {options.map((option) => {
-                          const isSelected = field.value === option;
+                          const isSelected = field.value === option.value;
                           return (
                             <CommandItem
-                              key={option}
-                              value={option}
+                              key={option.value}
+                              value={option.value}
                               onMouseDown={(event) => {
                                 event.preventDefault();
                                 event.stopPropagation();
                               }}
-                              onSelect={() => handleSelectOption(option, field)}
+                              onSelect={() =>
+                                handleSelectOption(option.value, field)
+                              }
                               className={cn(
                                 "flex w-full items-center gap-2",
                                 !isSelected ? "pl-8" : null
                               )}
                             >
                               {isSelected ? <Check className="w-4" /> : null}
-                              {option}
+                              {option.name}
                             </CommandItem>
                           );
                         })}
@@ -169,7 +171,7 @@ export const AutoComplete = ({
                     ) : null}
                     {!isLoading ? (
                       <CommandPrimitive.Empty className="cursor-pointer rounded-sm px-2 py-3 text-center text-sm text-gray-600">
-                        Add {field.value}?
+                        Add {inputDisplay}?
                       </CommandPrimitive.Empty>
                     ) : null}
                   </CommandList>

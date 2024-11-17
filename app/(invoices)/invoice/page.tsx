@@ -2,6 +2,14 @@ import InvoiceListing from "@/features/invoices/components/invoice-listing";
 import { InvoiceWithCustomer } from "@/schema/types";
 import { createClient } from "@/utils/supabase/server";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "quikBills Invoice Listing",
+  description: "List all invoices",
+};
+
+
 const InvoicePage = async () => {
   const supabase = createClient();
 

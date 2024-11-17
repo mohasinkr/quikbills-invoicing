@@ -41,7 +41,6 @@ export type Database = {
       }
       invoices: {
         Row: {
-          amount: number | null
           created_at: string
           customer_id: string
           description: string | null
@@ -50,9 +49,10 @@ export type Database = {
           owner_id: string | null
           quantity: number
           status: Database["public"]["Enums"]["Status"]
+          total: number
+          unit_price: number
         }
         Insert: {
-          amount?: number | null
           created_at?: string
           customer_id: string
           description?: string | null
@@ -61,9 +61,10 @@ export type Database = {
           owner_id?: string | null
           quantity?: number
           status?: Database["public"]["Enums"]["Status"]
+          total?: number
+          unit_price?: number
         }
         Update: {
-          amount?: number | null
           created_at?: string
           customer_id?: string
           description?: string | null
@@ -72,6 +73,8 @@ export type Database = {
           owner_id?: string | null
           quantity?: number
           status?: Database["public"]["Enums"]["Status"]
+          total?: number
+          unit_price?: number
         }
         Relationships: [
           {

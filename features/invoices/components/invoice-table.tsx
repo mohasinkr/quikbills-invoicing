@@ -31,7 +31,7 @@ const InvoiceTable = ({ invoices }: { invoices: InvoiceWithCustomer[] }) => {
             <TableCell>{invoice.customers.name}</TableCell>
             <TableCell>{invoice.description}</TableCell>
             <TableCell>{invoice.due_date}</TableCell>
-            <TableCell>${invoice.amount}</TableCell>
+            <TableCell>₹{invoice.total || 0}</TableCell>
             <TableCell>
               <InvoiceStatusBadge status={invoice.status} />
             </TableCell>

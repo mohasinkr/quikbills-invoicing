@@ -25,18 +25,26 @@ import {
 } from "@/components/ui/form";
 import DatePicker from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
+import { createInvoice } from "../actions/create-invoice";
+import { toast } from "sonner";
+import { useFormStatus } from "react-dom";
+import LoadingStatus from "@/components/ui/loading-status";
 
 const schema = z.object({
   unit_price: z.coerce.number().min(0.0, "Amount is required"),
   description: z.string().min(1, "Item description is required"),
   quantity: z.coerce.number().min(1, "Atleast one item is required"),
   total: z.coerce.number().min(0.0, "Total amount is required"),
-  dueDate: z.date().transform((date) => date.toISOString()),
-  status: z.enum(["Paid", "Unpaid", "Overdue"]),
-  customerName: z.string().min(1, "Required"),
+  due_date: z.date().transform((date) => date.toISOString()),
+  status: z.enum(["paid", "unpaid", "overdue"]),
+  customer_id: z.string().min(1, "Required"),
 });
 
-const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
+type InvoiceFormProps = {
+  customerNames: Array<{ name: string; value: string }>;
+};
+
+const CreateInvoiceForm = ({ customerNames }: InvoiceFormProps) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -44,16 +52,26 @@ const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
       description: "",
       quantity: 1,
       total: 0,
-      dueDate: new Date().toISOString(),
-      status: "Unpaid",
-      customerName: "",
+      due_date: new Date().toISOString(),
+      status: "unpaid",
+      customer_id: "",
     },
     mode: "onSubmit",
   });
 
+  // const { pending } = useFormStatus();
+
   async function onSubmit(values: z.infer<typeof schema>) {
     console.table(values);
-    // const response = await createInvoice(values);
+    try {
+      const response = await createInvoice(values);
+      if (response) {
+        toast.success("Invoice created successfully");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
   }
 
   return (
@@ -62,7 +80,7 @@ const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
         <div>
           <Label htmlFor="customer_name">Customer Name</Label>
           <AutoComplete
-            name="customerName"
+            name="customer_id"
             form={form}
             hideIcon
             options={customerNames}
@@ -109,7 +127,7 @@ const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
           )}
         />
 
-        <DatePicker form={form} name="dueDate" label="Due Date" />
+        <DatePicker form={form} name="due_date" label="Due Date" />
 
         <MoneyInput form={form} label="Unit Price" name="unit_price" />
 
@@ -134,9 +152,9 @@ const CreateInvoiceForm = ({ customerNames }: { customerNames: string[] }) => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Paid">Paid</SelectItem>
-              <SelectItem value="Unpaid">Unpaid</SelectItem>
-              <SelectItem value="Overdue">Overdue</SelectItem>
+              <SelectItem value="paid">Paid</SelectItem>
+              <SelectItem value="unpaid">Unpaid</SelectItem>
+              <SelectItem value="overdue">Overdue</SelectItem>
             </SelectContent>
           </Select>
         </div>

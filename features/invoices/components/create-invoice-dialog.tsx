@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,14 +7,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { PlusIcon } from "lucide-react";
-import React from "react";
 import CreateInvoiceForm from "./create-invoice-form";
 import { getCustomers } from "@/features/customers/actions/get-customers";
 
 const CreateInvoiceDialog = async () => {
   // mapping the customer names to an array
-  const customerNames = (await getCustomers("name")).map(
-    (customer) => customer.name
+  const customerNames = (await getCustomers(["name", "customer_id"])).map(
+    (customer) => ({ name: customer.name, value: customer.customer_id })
   );
 
   const componentType = typeof window === "undefined" ? "server" : "client";

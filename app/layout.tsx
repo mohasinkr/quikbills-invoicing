@@ -1,5 +1,6 @@
 import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const roboto_mono = Roboto_Mono({
   subsets: ["latin"],
@@ -14,7 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${roboto_mono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <main>{children}</main>
+        <Toaster position="top-right" />
+      </body>
     </html>
   );
 }
