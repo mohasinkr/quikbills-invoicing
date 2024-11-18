@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
     "generate-types": "supabase gen types --lang=typescript --project-id jrwllainxczurxdplyht --schema public > schema/schema.ts",
     "format": "prettier --write ."
   },

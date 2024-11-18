@@ -9,11 +9,29 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 //
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
+// -- Login in command --
+Cypress.Commands.add('login', () => {
+    const email = Cypress.env('email');
+    const password = Cypress.env('password');
+    cy.visit('/login');
+    cy.get('input[name="email"]').type(email);
+    cy.get('input[name="password"]').type(password);
+    cy.get('button[type="submit"]').click();
+    cy.url().should('not.include', '/login');
+});
+
+
+Cypress.Commands.add('ensureLoggedIn', () => {
+    cy.visit('/');
+
+    // Check if the current URL is /login
+    cy.url().then((url) => {
+        if (url.includes('/login')) {
+            cy.login(); // Call your existing login command
+        }
+    });
+});
+
 // -- This is a child command --
 // Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
 //
