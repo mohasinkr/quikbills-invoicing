@@ -10,6 +10,9 @@
 /coverage
 cypress.env.json
 
+# repomix output
+repomix-output.txt
+
 # next.js
 /.next/
 /out/

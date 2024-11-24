@@ -7,9 +7,9 @@ export const createInvoice = async (
   invoice: Omit<Invoice, "id" | "owner_id" | "created_at">
 ) => {
   const supabase = createClient();
-  const { data, error } = await supabase.from("invoices").insert(invoice);
-  if (error) {
-    throw error;
+  const res = await supabase.from("invoices").insert(invoice);
+  if (res.error) {
+    throw res.error;
   }
-  return data;
+  return res;
 };

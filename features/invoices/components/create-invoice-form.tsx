@@ -27,15 +27,13 @@ import DatePicker from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { createInvoice } from "../actions/create-invoice";
 import { toast } from "sonner";
-import { useFormStatus } from "react-dom";
-import LoadingStatus from "@/components/ui/loading-status";
 
 const schema = z.object({
   unit_price: z.coerce.number().min(0.0, "Amount is required"),
   description: z.string().min(1, "Item description is required"),
   quantity: z.coerce.number().min(1, "Atleast one item is required"),
   total: z.coerce.number().min(0.0, "Total amount is required"),
-  due_date: z.date().transform((date) => date.toISOString()),
+  due_date: z.string().transform((date) => new Date(date).toISOString()),
   status: z.enum(["paid", "unpaid", "overdue"]),
   customer_id: z.string().min(1, "Required"),
 });
@@ -59,13 +57,13 @@ const CreateInvoiceForm = ({ customerNames }: InvoiceFormProps) => {
     mode: "onSubmit",
   });
 
-  // const { pending } = useFormStatus();
 
   async function onSubmit(values: z.infer<typeof schema>) {
     console.table(values);
     try {
       const response = await createInvoice(values);
-      if (response) {
+      if (response.status === 201) {
+        console.log("got the response");
         toast.success("Invoice created successfully");
       }
     } catch (error) {
@@ -147,7 +145,7 @@ const CreateInvoiceForm = ({ customerNames }: InvoiceFormProps) => {
 
         <div>
           <Label htmlFor="status">Status</Label>
-          <Select name="status" defaultValue="Unpaid">
+          <Select name="status" defaultValue="unpaid">
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>

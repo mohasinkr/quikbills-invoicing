@@ -8,7 +8,6 @@ import { signup } from "../actions/signup";
 import { login } from "../actions/login";
 import { handleGithubAuth } from "../actions/login-provider";
 import { cn } from "@/lib/utils";
-import { useFormState } from "react-dom";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
   context?: "login" | "signup";
@@ -59,6 +58,7 @@ export function UserAuthForm({
           />
         </div>
         <Button
+          type="submit"
           formAction={onSubmit}
           // disabled={isLoading}
         >
