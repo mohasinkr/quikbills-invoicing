@@ -1,7 +1,6 @@
 "use client";
 
 import { AutoComplete } from "@/components/ui/autocomplete";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import MoneyInput from "@/components/ui/money-input";
 import {
@@ -27,22 +26,29 @@ import DatePicker from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { createInvoice } from "../actions/create-invoice";
 import { toast } from "sonner";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import LoadingSpinner from "@/components/ui/loading-spinner";
+import { revalidatePath } from "next/cache";
 
 const schema = z.object({
   unit_price: z.coerce.number().min(0.0, "Amount is required"),
   description: z.string().min(1, "Item description is required"),
-  quantity: z.coerce.number().min(1, "Atleast one item is required"),
+  quantity: z.coerce.number().min(1, "At least one item is required"),
   total: z.coerce.number().min(0.0, "Total amount is required"),
-  due_date: z.string().transform((date) => new Date(date).toISOString()),
+  due_date: z.date().transform((date) => new Date(date).toISOString()),
   status: z.enum(["paid", "unpaid", "overdue"]),
   customer_id: z.string().min(1, "Required"),
 });
 
 type InvoiceFormProps = {
   customerNames: Array<{ name: string; value: string }>;
+  setOpen: (open: boolean) => React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const CreateInvoiceForm = ({ customerNames }: InvoiceFormProps) => {
+const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -57,18 +63,20 @@ const CreateInvoiceForm = ({ customerNames }: InvoiceFormProps) => {
     mode: "onSubmit",
   });
 
-
   async function onSubmit(values: z.infer<typeof schema>) {
     console.table(values);
+    setIsSubmitting(true);
     try {
       const response = await createInvoice(values);
       if (response.status === 201) {
-        console.log("got the response");
         toast.success("Invoice created successfully");
+        form.reset();
       }
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -157,7 +165,11 @@ const CreateInvoiceForm = ({ customerNames }: InvoiceFormProps) => {
           </Select>
         </div>
         <Button type="submit" className="w-full">
-          Create Invoice
+          {isSubmitting ? (
+            <LoadingSpinner label={"Creating Invoice"} />
+          ) : (
+            "Create Invoice"
+          )}
         </Button>
       </form>
     </Form>

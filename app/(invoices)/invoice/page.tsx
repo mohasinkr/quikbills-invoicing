@@ -9,7 +9,6 @@ export const metadata: Metadata = {
   description: "List all invoices",
 };
 
-
 const InvoicePage = async () => {
   const supabase = createClient();
 
