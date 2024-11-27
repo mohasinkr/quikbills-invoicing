@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -9,8 +11,32 @@ import {
 import { InvoiceWithCustomer } from "@/schema/types";
 import InvoiceStatusBadge from "./invoice-status-badge";
 import InvoiceActions from "./invoice-actions";
+import { Badge } from "@/components/ui/badge";
+import { useOptimistic } from "react";
+import { cn } from "@/lib/utils";
+
+export type OptimisticAction = {
+  type: 'DELETE' | 'UPDATE';
+  id: number;
+  status?: string;
+};
+
+type OptimisticInvoice = InvoiceWithCustomer & {
+  actionStatus?: string;
+};
 
 const InvoiceTable = ({ invoices }: { invoices: InvoiceWithCustomer[] }) => {
+  const [optimisticInvoices, addOptimisticUpdate] = useOptimistic(
+    invoices as OptimisticInvoice[],
+    (state: OptimisticInvoice[], action: OptimisticAction) => {
+      return state.map(invoice =>
+        invoice.id === action.id
+          ? { ...invoice, actionStatus: action.status }
+          : invoice
+      );
+    }
+  );
+
   return (
     <Table>
       <TableHeader>
@@ -25,8 +51,14 @@ const InvoiceTable = ({ invoices }: { invoices: InvoiceWithCustomer[] }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {invoices.map((invoice) => (
-          <TableRow key={invoice.id}>
+        {optimisticInvoices.map((invoice) => (
+          <TableRow 
+            key={invoice.id}
+            className={cn(
+              "transition-all duration-300",
+              invoice.actionStatus === "deleting" && "opacity-50 bg-muted"
+            )}
+          >
             <TableCell>{invoice.id}</TableCell>
             <TableCell>{invoice.customers.name}</TableCell>
             <TableCell>{invoice.description}</TableCell>
@@ -36,8 +68,17 @@ const InvoiceTable = ({ invoices }: { invoices: InvoiceWithCustomer[] }) => {
               <InvoiceStatusBadge status={invoice.status} />
             </TableCell>
             <TableCell>
-              <InvoiceActions invoiceId={invoice.id} />
+              <InvoiceActions
+                doOptimisticUpdate={addOptimisticUpdate}
+                invoiceId={invoice.id}
+                isDeleting={invoice.actionStatus === "deleting"}
+              />
             </TableCell>
+            {invoice?.actionStatus && (
+              <TableCell>
+                <Badge variant={"destructive"}>{invoice.actionStatus}</Badge>
+              </TableCell>
+            )}
           </TableRow>
         ))}
       </TableBody>

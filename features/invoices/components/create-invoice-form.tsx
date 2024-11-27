@@ -36,14 +36,14 @@ const schema = z.object({
   description: z.string().min(1, "Item description is required"),
   quantity: z.coerce.number().min(1, "At least one item is required"),
   total: z.coerce.number().min(0.0, "Total amount is required"),
-  due_date: z.date().transform((date) => new Date(date).toISOString()),
+  due_date: z.string(),
   status: z.enum(["paid", "unpaid", "overdue"]),
   customer_id: z.string().min(1, "Required"),
 });
 
 type InvoiceFormProps = {
   customerNames: Array<{ name: string; value: string }>;
-  setOpen: (open: boolean) => React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen?: (open: boolean) => React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
@@ -164,7 +164,7 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
             </SelectContent>
           </Select>
         </div>
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
             <LoadingSpinner label={"Creating Invoice"} />
           ) : (
@@ -175,5 +175,5 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
     </Form>
   );
 };
-
+  
 export default CreateInvoiceForm;
