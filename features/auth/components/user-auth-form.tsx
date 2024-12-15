@@ -8,6 +8,7 @@ import { signup } from "../actions/signup";
 import { login } from "../actions/login";
 import { handleGithubAuth } from "../actions/login-provider";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
   context?: "login" | "signup";
@@ -20,11 +21,13 @@ export function UserAuthForm({
 }: UserAuthFormProps) {
   // const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  function onSubmit(data: FormData) {
+  async function onSubmit(data: FormData) {
     if (context === "login") {
-      login(data);
+      await login(data);
     } else {
-      signup(data);
+      const signupData = await signup(data);
+      if (signupData?.user)
+        toast.success("A confirmation mail has been sent to your email address.");
     }
   }
 
@@ -43,6 +46,7 @@ export function UserAuthForm({
             autoCapitalize="none"
             autoComplete="email"
             autoCorrect="off"
+            required
           />
         </div>
         <div className="grid gap-1">
@@ -55,6 +59,7 @@ export function UserAuthForm({
             placeholder="******"
             type="password"
             autoCapitalize="none"
+            required
           />
         </div>
         <Button
