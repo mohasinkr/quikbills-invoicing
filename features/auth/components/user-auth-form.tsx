@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signup } from "../actions/signup";
 import { login } from "../actions/login";
-import { handleGithubAuth } from "../actions/login-provider";
+import {
+  handleAuthProvider
+} from "../actions/login-provider";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -27,7 +29,9 @@ export function UserAuthForm({
     } else {
       const signupData = await signup(data);
       if (signupData?.user)
-        toast.success("A confirmation mail has been sent to your email address.");
+        toast.success(
+          "A confirmation mail has been sent to your email address."
+        );
     }
   }
 
@@ -84,9 +88,9 @@ export function UserAuthForm({
       </div>
       <Button
         variant="outline"
-        // disabled={isLoading}
+        type="button"
         className="w-full"
-        formAction={() => handleGithubAuth("github")}
+        onClick={() => handleAuthProvider("github")}
       >
         {/* {isLoading ? (
           <Loader className="mr-2 h-4 w-4 animate-spin" />
