@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 type OAuthProvider = "github" | "google";
 
 export async function handleGithubAuth(provider: OAuthProvider) {
-  const supabase = await await createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
