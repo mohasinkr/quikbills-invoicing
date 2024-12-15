@@ -14,44 +14,40 @@ interface InvoiceActionsProps {
   isDeleting?: boolean;
 }
 
-const InvoiceActions = ({ 
-  invoiceId, 
+const InvoiceActions = ({
+  invoiceId,
   doOptimisticUpdate,
-  isDeleting 
+  isDeleting,
 }: InvoiceActionsProps) => {
-  const [isPending, setIsPending] = useState(false);
   const [isPendingTransition, startTransition] = useTransition();
 
   async function handleDeleteInvoice() {
-    if (isDeleting || isPending) return;
-    
-    setIsPending(true);
-    try {
-      startTransition(() => {
-        doOptimisticUpdate({
-          type: 'DELETE',
-          id: invoiceId,
-          status: 'deleting'
-        });
+    if (isDeleting || isPendingTransition) return;
+
+    startTransition(async () => {
+      doOptimisticUpdate({
+        type: "DELETE",
+        id: invoiceId,
+        status: "deleting",
       });
 
-      const response = await deleteInvoice(invoiceId);
+      try {
+        const response = await deleteInvoice(invoiceId);
 
-      if (response.status === 204) {
-        toast.success("Invoice deleted successfully");
+        if (response.status === 204) {
+          toast.success("Invoice deleted successfully");
+        } else {
+          toast.error(`Failed to delete invoice`);
+        }
+      } catch (error) {
+        doOptimisticUpdate({
+          type: "DELETE",
+          id: invoiceId,
+          status: undefined,
+        });
+        toast.error("Failed to delete invoice");
       }
-    } catch (error) {
-      startTransition(() => {
-        doOptimisticUpdate({
-          type: 'DELETE',
-          id: invoiceId,
-          status: undefined
-        });
-      });
-      toast.error("Failed to delete invoice");
-    } finally {
-      setIsPending(false);
-    }
+    });
   }
 
   return (
@@ -62,11 +58,11 @@ const InvoiceActions = ({
       <Button variant="outline" size="sm">
         <CheckIcon className="h-4 w-4" />
       </Button>
-      <Button 
-        variant="outline" 
-        size="sm" 
+      <Button
+        variant="outline"
+        size="sm"
         onClick={handleDeleteInvoice}
-        disabled={isDeleting || isPending || isPendingTransition}
+        disabled={isDeleting || isPendingTransition}
         className={cn(
           "transition-all duration-200",
           isDeleting && "animate-pulse"

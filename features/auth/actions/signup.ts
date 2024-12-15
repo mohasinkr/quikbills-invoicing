@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
 export async function signup(formData: FormData) {
-  const supabase = createClient();
+  const supabase = await await createClient();
 
   // type-casting here for convenience
   // in practice, you should validate your inputs

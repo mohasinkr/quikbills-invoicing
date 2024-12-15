@@ -13,7 +13,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { z, ZodString } from "zod";
 import {
   Form,
   FormControl,
@@ -29,7 +29,8 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import { revalidatePath } from "next/cache";
+import FormSelect from "@/components/ui/form-select";
+
 
 const schema = z.object({
   unit_price: z.coerce.number().min(0.0, "Amount is required"),
@@ -37,7 +38,7 @@ const schema = z.object({
   quantity: z.coerce.number().min(1, "At least one item is required"),
   total: z.coerce.number().min(0.0, "Total amount is required"),
   due_date: z.string(),
-  status: z.enum(["paid", "unpaid", "overdue"]),
+  status:  z.enum(["paid", "unpaid", "overdue"]),
   customer_id: z.string().min(1, "Required"),
 });
 
@@ -67,6 +68,7 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
     console.table(values);
     setIsSubmitting(true);
     try {
+      console.table(values);
       const response = await createInvoice(values);
       if (response.status === 201) {
         toast.success("Invoice created successfully");
@@ -151,19 +153,12 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
           )}
         />
 
-        <div>
-          <Label htmlFor="status">Status</Label>
-          <Select name="status" defaultValue="unpaid">
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="paid">Paid</SelectItem>
-              <SelectItem value="unpaid">Unpaid</SelectItem>
-              <SelectItem value="overdue">Overdue</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <FormSelect name="status" form={form}>
+          <SelectItem value="paid">Paid</SelectItem>
+          <SelectItem value="unpaid">Unpaid</SelectItem>
+          <SelectItem value="overdue">Overdue</SelectItem>
+        </FormSelect>
+
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
             <LoadingSpinner label={"Creating Invoice"} />
@@ -175,5 +170,5 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
     </Form>
   );
 };
-  
+
 export default CreateInvoiceForm;

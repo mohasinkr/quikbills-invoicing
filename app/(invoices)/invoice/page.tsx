@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const InvoicePage = async () => {
-  const supabase = createClient();
+  const supabase = await await createClient();
 
   const { data: invoices } = await supabase
     .from("invoices")

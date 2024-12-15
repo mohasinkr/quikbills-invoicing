@@ -16,7 +16,7 @@ import { useOptimistic } from "react";
 import { cn } from "@/lib/utils";
 
 export type OptimisticAction = {
-  type: 'DELETE' | 'UPDATE';
+  type: "DELETE" | "UPDATE";
   id: number;
   status?: string;
 };
@@ -25,11 +25,21 @@ type OptimisticInvoice = InvoiceWithCustomer & {
   actionStatus?: string;
 };
 
+const TABLE_HEADERS = [
+  "Invoice ID",
+  "Customer Name",
+  "Description",
+  "Due Date",
+  "Total Amount",
+  "Status",
+  "Actions",
+] as const;
+
 const InvoiceTable = ({ invoices }: { invoices: InvoiceWithCustomer[] }) => {
   const [optimisticInvoices, addOptimisticUpdate] = useOptimistic(
     invoices as OptimisticInvoice[],
     (state: OptimisticInvoice[], action: OptimisticAction) => {
-      return state.map(invoice =>
+      return state.map((invoice) =>
         invoice.id === action.id
           ? { ...invoice, actionStatus: action.status }
           : invoice
@@ -41,22 +51,18 @@ const InvoiceTable = ({ invoices }: { invoices: InvoiceWithCustomer[] }) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Invoice ID</TableHead>
-          <TableHead>Customer Name</TableHead>
-          <TableHead>Description</TableHead>
-          <TableHead>Due Date</TableHead>
-          <TableHead>Total Amount</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Actions</TableHead>
+          {TABLE_HEADERS.map((header) => (
+            <TableHead key={header}>{header}</TableHead>
+          ))}
         </TableRow>
       </TableHeader>
       <TableBody>
         {optimisticInvoices.map((invoice) => (
-          <TableRow 
+          <TableRow
             key={invoice.id}
             className={cn(
               "transition-all duration-300",
-              invoice.actionStatus === "deleting" && "opacity-50 bg-muted"
+              invoice.actionStatus === "deleting" && "bg-muted opacity-50"
             )}
           >
             <TableCell>{invoice.id}</TableCell>
