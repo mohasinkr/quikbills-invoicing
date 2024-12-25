@@ -83,7 +83,6 @@ const InvoiceTable = ({ invoices, customerNames }: InvoiceTableProps) => {
                 customerNames={customerNames}
                 doOptimisticUpdate={addOptimisticUpdate}
                 invoice={invoice}
-                isDeleting={invoice.actionStatus === "deleting"}
               />
             </TableCell>
             {invoice?.actionStatus && (
