@@ -1,13 +1,17 @@
 "use client";
 
-import { AutoComplete } from "@/components/ui/autocomplete";
-import { Label } from "@/components/ui/label";
-import MoneyInput from "@/components/ui/money-input";
-import { SelectItem } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { InvoiceWithCustomer, TCustomerNames } from "@/schema/types";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { useState } from "react";
+import LoadingSpinner from "@/components/ui/loading-spinner";
+import { updateInvoice } from "../actions/update-invoice";
+import { AutoComplete } from "@/components/ui/autocomplete";
+import { Label } from "@/components/ui/label";
+import MoneyInput from "@/components/ui/money-input";
 import {
   Form,
   FormControl,
@@ -18,15 +22,13 @@ import {
 } from "@/components/ui/form";
 import DatePicker from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
-import { createInvoice } from "../actions/create-invoice";
-import { toast } from "sonner";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import LoadingSpinner from "@/components/ui/loading-spinner";
+import { Textarea } from "@/components/ui/textarea";
 import FormSelect from "@/components/ui/form-select";
-import { TCustomerNames } from "@/schema/types";
+import { SelectItem } from "@/components/ui/select";
+import { getDirtyFields } from "@/utils/get-dirty-fields";
 
 const schema = z.object({
+  id: z.number(),
   unit_price: z.coerce.number().min(0.0, "Amount is required"),
   description: z.string().min(1, "Item description is required"),
   quantity: z.coerce.number().min(1, "At least one item is required"),
@@ -36,41 +38,45 @@ const schema = z.object({
   customer_id: z.string().min(1, "Required"),
 });
 
-type InvoiceFormProps = {
+type EditInvoiceFormProps = {
+  invoice: InvoiceWithCustomer;
   customerNames: TCustomerNames;
-  setOpen?: (open: boolean) => React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen?: (open: boolean) => void;
 };
 
-const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
+const EditInvoiceForm = ({
+  invoice,
+  customerNames,
+  setOpen,
+}: EditInvoiceFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      unit_price: 0,
-      description: "",
-      quantity: 1,
-      total: 0,
-      due_date: new Date().toISOString(),
-      status: "unpaid",
-      customer_id: "",
+      id: invoice.id,
+      unit_price: invoice.unit_price,
+      description: invoice.description || "",
+      quantity: invoice.quantity,
+      total: invoice.total,
+      due_date: invoice.due_date || "",
+      status: invoice.status,
+      customer_id: invoice.customer_id,
     },
-    mode: "onSubmit",
   });
 
   async function onSubmit(values: z.infer<typeof schema>) {
-    console.table(values);
     setIsSubmitting(true);
     try {
-      console.table(values);
-      const response = await createInvoice(values);
-      if (response.status === 201) {
-        toast.success("Invoice created successfully");
-        form.reset();
+      const editedValues = getDirtyFields(form.formState.dirtyFields, values);
+      const response = await updateInvoice(editedValues);
+      if (response.status === 200) {
+        toast.success("Invoice updated successfully");
+        setOpen?.(false);
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
+      console.error(error);
+      toast.error("Failed to update invoice");
     } finally {
       setIsSubmitting(false);
     }
@@ -80,13 +86,12 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
     <Form {...form}>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         <div>
-          <Label htmlFor="customer_name">Customer Name</Label>
+          <Label htmlFor="customer_id">Customer Name</Label>
           <AutoComplete
             name="customer_id"
             form={form}
             hideIcon
             options={customerNames}
-            emptyMessage="Add kevin?"
           />
         </div>
 
@@ -130,7 +135,6 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
         />
 
         <DatePicker form={form} name="due_date" label="Due Date" />
-
         <MoneyInput form={form} label="Unit Price" name="unit_price" />
 
         <FormField
@@ -155,9 +159,9 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
 
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
-            <LoadingSpinner label={"Creating Invoice"} />
+            <LoadingSpinner label="Updating Invoice" />
           ) : (
-            "Create Invoice"
+            "Update Invoice"
           )}
         </Button>
       </form>
@@ -165,4 +169,4 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
   );
 };
 
-export default CreateInvoiceForm;
+export default EditInvoiceForm;

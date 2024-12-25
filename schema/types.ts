@@ -7,3 +7,5 @@ export type Payments = Tables<"payments">;
 export interface InvoiceWithCustomer extends Invoice {
   customers: Tables<"customers">;
 }
+
+export type TCustomerNames = Array<{ name: string; value: string }>;

@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
 
-import { moneyFormatter } from "@/lib/format-money";
+import { moneyFormatter } from "@/utils/format-money";
 
 type TextInputProps = {
   form: UseFormReturn<any>;

@@ -39,8 +39,6 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log("user", user);
-
   const requestPath = request.nextUrl.pathname;
 
   if (!user && !unprotectedPaths.includes(requestPath)) {
