@@ -11,6 +11,7 @@ import DialogForm from "@/components/ui/dialog-form";
 import EditInvoiceForm from "./edit-invoice-form";
 import { InvoiceWithCustomer, TCustomerNames } from "@/schema/types";
 import { updateInvoice } from "../actions/update-invoice";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 interface InvoiceActionsProps {
   customerNames: TCustomerNames;
@@ -24,12 +25,13 @@ const InvoiceActions = ({
   doOptimisticUpdate,
   // isDeleting,
 }: InvoiceActionsProps) => {
-  const [isPendingTransition, startTransition] = useTransition();
+  const [isPendingDeletion, startDeleteTransition] = useTransition();
+  const [isPendingStatusChange, startStatusTransition] = useTransition();
 
   async function handleDeleteInvoice() {
-    if (isPendingTransition) return;
+    if (isPendingDeletion) return;
 
-    startTransition(async () => {
+    startDeleteTransition(async () => {
       doOptimisticUpdate({
         type: "DELETE",
         id: invoice.id,
@@ -54,23 +56,26 @@ const InvoiceActions = ({
     });
   }
 
-  // async function handleMarkAsPaid(){
-  //   if (isPendingTransition) return;
+  async function handleMarkAsPaid() {
+    console.log("handleMarkAsPaid");
+    if (isPendingStatusChange) return;
 
-  //   startTransition(async () => {
-
-  //     try {
-  //       const response = await updateInvoice();
-  //       if (response.status === 200) {
-  //         toast.success("Invoice marked as paid");
-  //       } else {
-  //         toast.error(`Failed to mark invoice as paid`);
-  //       }
-  //     } catch (error) {
-  //       toast.error("Failed to mark invoice as paid");
-  //     }
-
-  //   });
+    startStatusTransition(async () => {
+      try {
+        const response = await updateInvoice({
+          id: invoice.id,
+          status: "paid",
+        });
+        if (response.status === 200) {
+          toast.success("Invoice marked as paid");
+        } else {
+          toast.error(`Failed to mark invoice as paid`);
+        }
+      } catch (error) {
+        toast.error("Failed to mark invoice as paid");
+      }
+    });
+  }
 
   return (
     <div className="flex space-x-2">
@@ -85,21 +90,30 @@ const InvoiceActions = ({
           <EditInvoiceForm invoice={invoice} customerNames={customerNames} />
         }
       />
-      <Button variant="outline" size="sm" >
-        <CheckIcon className="h-4 w-4" />
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleMarkAsPaid}
+        disabled={isPendingDeletion}
+      >
+        {isPendingStatusChange ? (
+          <LoadingSpinner spinnerClassName="w-4 h-4 text-black" />
+        ) : (
+          <CheckIcon className="h-4 w-4" />
+        )}
       </Button>
       <Button
         variant="outline"
         size="sm"
         onClick={handleDeleteInvoice}
-        disabled={isPendingTransition}
+        disabled={isPendingDeletion}
         className={cn(
           "transition-all duration-200",
-          isPendingTransition && "animate-pulse"
+          isPendingDeletion && "animate-pulse"
         )}
       >
-        {isPendingTransition ? (
-          <LoaderIcon className="h-4 w-4 animate-spin" />
+        {isPendingDeletion ? (
+          <LoadingSpinner spinnerClassName="w-4 h-4 text-black" />
         ) : (
           <XIcon className="h-4 w-4" />
         )}
