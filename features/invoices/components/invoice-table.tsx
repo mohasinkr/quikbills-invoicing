@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { InvoiceWithCustomer } from "@/schema/types";
+import { InvoiceWithCustomer, TCustomerNames } from "@/schema/types";
 import InvoiceStatusBadge from "./invoice-status-badge";
 import InvoiceActions from "./invoice-actions";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +25,11 @@ type OptimisticInvoice = InvoiceWithCustomer & {
   actionStatus?: string;
 };
 
+type InvoiceTableProps = {
+  invoices: InvoiceWithCustomer[];
+  customerNames: TCustomerNames;
+};
+
 const TABLE_HEADERS = [
   "Invoice ID",
   "Customer Name",
@@ -35,7 +40,7 @@ const TABLE_HEADERS = [
   "Actions",
 ] as const;
 
-const InvoiceTable = ({ invoices }: { invoices: InvoiceWithCustomer[] }) => {
+const InvoiceTable = ({ invoices, customerNames }: InvoiceTableProps) => {
   const [optimisticInvoices, addOptimisticUpdate] = useOptimistic(
     invoices as OptimisticInvoice[],
     (state: OptimisticInvoice[], action: OptimisticAction) => {
@@ -75,8 +80,9 @@ const InvoiceTable = ({ invoices }: { invoices: InvoiceWithCustomer[] }) => {
             </TableCell>
             <TableCell>
               <InvoiceActions
+                customerNames={customerNames}
                 doOptimisticUpdate={addOptimisticUpdate}
-                invoiceId={invoice.id}
+                invoice={invoice}
                 isDeleting={invoice.actionStatus === "deleting"}
               />
             </TableCell>

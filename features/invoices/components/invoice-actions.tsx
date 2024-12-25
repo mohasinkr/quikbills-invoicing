@@ -7,15 +7,20 @@ import { toast } from "sonner";
 import { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { OptimisticAction } from "./invoice-table";
+import DialogForm from "@/components/ui/dialog-form";
+import EditInvoiceForm from "./edit-invoice-form";
+import { InvoiceWithCustomer, TCustomerNames } from "@/schema/types";
 
 interface InvoiceActionsProps {
-  invoiceId: number;
+  customerNames: TCustomerNames;
+  invoice: InvoiceWithCustomer;
   doOptimisticUpdate: (action: OptimisticAction) => void;
   isDeleting?: boolean;
 }
 
 const InvoiceActions = ({
-  invoiceId,
+  customerNames,
+  invoice,
   doOptimisticUpdate,
   isDeleting,
 }: InvoiceActionsProps) => {
@@ -27,13 +32,12 @@ const InvoiceActions = ({
     startTransition(async () => {
       doOptimisticUpdate({
         type: "DELETE",
-        id: invoiceId,
+        id: invoice.id,
         status: "deleting",
       });
 
       try {
-        const response = await deleteInvoice(invoiceId);
-
+        const response = await deleteInvoice(invoice.id);
         if (response.status === 204) {
           toast.success("Invoice deleted successfully");
         } else {
@@ -42,7 +46,7 @@ const InvoiceActions = ({
       } catch (error) {
         doOptimisticUpdate({
           type: "DELETE",
-          id: invoiceId,
+          id: invoice.id,
           status: undefined,
         });
         toast.error("Failed to delete invoice");
@@ -52,10 +56,18 @@ const InvoiceActions = ({
 
   return (
     <div className="flex space-x-2">
-      <Button variant="outline" size="sm">
-        <EditIcon className="h-4 w-4" />
-      </Button>
-      <Button variant="outline" size="sm">
+      <DialogForm
+        title="Edit Invoice"
+        trigger={
+          <Button variant="outline" size="sm">
+            <EditIcon className="h-4 w-4" />
+          </Button>
+        }
+        form={
+          <EditInvoiceForm invoice={invoice} customerNames={customerNames} />
+        }
+      />
+      <Button variant="outline" size="sm" >
         <CheckIcon className="h-4 w-4" />
       </Button>
       <Button

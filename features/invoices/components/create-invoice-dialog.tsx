@@ -1,14 +1,14 @@
 import CreateInvoiceForm from "./create-invoice-form";
-import { getCustomers } from "@/features/customers/actions/get-customers";
+import { getCustomers } from "@/lib/db/customers/get-customers";
 import DialogForm from "@/components/ui/dialog-form";
 import AddButton from "@/components/ui/add-button";
+import { TCustomerNames } from "@/schema/types";
 
-const CreateInvoiceDialog = async () => {
-  // mapping the customer names to an array
-  const customerNames = (await getCustomers(["name", "customer_id"])).map(
-    (customer) => ({ name: customer.name, value: customer.customer_id })
-  );
-
+const CreateInvoiceDialog = async ({
+  customerNames,
+}: {
+  customerNames: TCustomerNames;
+}) => {
   return (
     <DialogForm
       title="Create Invoice"
