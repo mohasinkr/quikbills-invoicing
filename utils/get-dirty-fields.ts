@@ -1,4 +1,4 @@
-export function getDirtyValues<T extends Record<string, any>>(
+export function getDirtyFields<T extends Record<string, any>>(
     dirtyFields: Partial<Record<keyof T, boolean>>,
     values: T
   ): Partial<T> & { id: number } {
