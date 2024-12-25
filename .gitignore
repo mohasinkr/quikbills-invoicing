@@ -8,6 +8,13 @@
 
 # testing
 /coverage
+cypress.env.json
+
+# repomix output
+repomix-output.txt
+
+# idea
+.idea
 
 # next.js
 /.next/
