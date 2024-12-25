@@ -20,15 +20,7 @@ export async function updateInvoice(values: z.infer<typeof UpdateInvoiceSchema>)
   
   const { error } = await supabase
     .from("invoices")
-    .update({
-      description: values.description,
-      unit_price: values.unit_price,
-      quantity: values.quantity,
-      total: values.total,
-      due_date: values.due_date,
-      status: values.status,
-      customer_id: values.customer_id,
-    })
+    .update(values)
     .eq("id", values.id);
 
   if (error) {

@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import FormSelect from "@/components/ui/form-select";
 import { SelectItem } from "@/components/ui/select";
+import { getDirtyFields } from "@/utils/get-dirty-fields";
 
 const schema = z.object({
   id: z.number(),
@@ -67,7 +68,8 @@ const EditInvoiceForm = ({
   async function onSubmit(values: z.infer<typeof schema>) {
     setIsSubmitting(true);
     try {
-      const response = await updateInvoice(values);
+      const editedValues = getDirtyFields(form.formState.dirtyFields, values);
+      const response = await updateInvoice(editedValues);
       if (response.status === 200) {
         toast.success("Invoice updated successfully");
         setOpen?.(false);
@@ -79,8 +81,6 @@ const EditInvoiceForm = ({
       setIsSubmitting(false);
     }
   }
-
-  console.log(customerNames,"customerNames");
 
   return (
     <Form {...form}>

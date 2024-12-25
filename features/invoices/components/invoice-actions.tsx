@@ -10,6 +10,7 @@ import { OptimisticAction } from "./invoice-table";
 import DialogForm from "@/components/ui/dialog-form";
 import EditInvoiceForm from "./edit-invoice-form";
 import { InvoiceWithCustomer, TCustomerNames } from "@/schema/types";
+import { updateInvoice } from "../actions/update-invoice";
 
 interface InvoiceActionsProps {
   customerNames: TCustomerNames;
@@ -26,7 +27,7 @@ const InvoiceActions = ({
   const [isPendingTransition, startTransition] = useTransition();
 
   async function handleDeleteInvoice() {
-    if (isPendingTransition || isPendingTransition) return;
+    if (isPendingTransition) return;
 
     startTransition(async () => {
       doOptimisticUpdate({
@@ -52,6 +53,24 @@ const InvoiceActions = ({
       }
     });
   }
+
+  // async function handleMarkAsPaid(){
+  //   if (isPendingTransition) return;
+
+  //   startTransition(async () => {
+
+  //     try {
+  //       const response = await updateInvoice();
+  //       if (response.status === 200) {
+  //         toast.success("Invoice marked as paid");
+  //       } else {
+  //         toast.error(`Failed to mark invoice as paid`);
+  //       }
+  //     } catch (error) {
+  //       toast.error("Failed to mark invoice as paid");
+  //     }
+
+  //   });
 
   return (
     <div className="flex space-x-2">
