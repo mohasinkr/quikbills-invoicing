@@ -4,6 +4,7 @@ import InvoiceTable from "./invoice-table";
 import { Button } from "@/components/ui/button";
 import { LogOutIcon } from "lucide-react";
 import { getCustomers } from "@/lib/db/customers/get-customers";
+import DownloadInvoice from "./download-as-pdf";
 
 export default async function InvoiceListing({
   invoices,
@@ -23,7 +24,10 @@ export default async function InvoiceListing({
           <LogOutIcon /> Logout
         </Button>
       </header>
-      <CreateInvoiceDialog customerNames={customerNames}/>
+      <section className="flex gap-x-4">
+        <CreateInvoiceDialog customerNames={customerNames}/>
+        <DownloadInvoice />
+      </section>
       <InvoiceTable invoices={invoices} customerNames={customerNames}/>
     </div>
   );
