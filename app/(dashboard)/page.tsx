@@ -1,111 +1,84 @@
-import LogoutButton from "@/components/common/logout-button";
-import { createClient } from "@/utils/supabase/server";
-import Image from "next/image";
-import { redirect } from "next/navigation";
+import { InvoiceChart } from '@/features/dashboard/components/invoice-chart'
+import { MetricCard } from '@/features/dashboard/components/metric-card'
+import { RecentInvoices } from '@/features/dashboard/components/recent-invoices'
+import { DollarSign, Users, FileText } from 'lucide-react'
 
-export default async function Home() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    redirect("/login");
-  }
 
+// This would typically come from an API or database
+const metrics = [
+  {
+    title: 'Total Revenue',
+    value: '$45,231.89',
+    description: '+20.1% from last month',
+    icon: <DollarSign className="h-4 w-4 text-muted-foreground" />,
+  },
+  {
+    title: 'Customers',
+    value: '2,350',
+    description: '+180.1% from last month',
+    icon: <Users className="h-4 w-4 text-muted-foreground" />,
+  },
+  {
+    title: 'Pending Invoices',
+    value: '12',
+    description: '-19% from last month',
+    icon: <FileText className="h-4 w-4 text-muted-foreground" />,
+  },
+]
+
+const recentInvoices = [
+  {
+    id: 'INV001',
+    customer: 'Acme Corp',
+    amount: 1250.00,
+    status: 'paid',
+    date: '2023-01-13',
+  },
+  {
+    id: 'INV002',
+    customer: 'Globex Corporation',
+    amount: 875.50,
+    status: 'pending',
+    date: '2023-01-14',
+  },
+  {
+    id: 'INV003',
+    customer: 'Soylent Corp',
+    amount: 2340.00,
+    status: 'overdue',
+    date: '2023-01-15',
+  },
+]
+
+const chartData = [
+  { name: 'Jan', total: 1200 },
+  { name: 'Feb', total: 2100 },
+  { name: 'Mar', total: 1800 },
+  { name: 'Apr', total: 2400 },
+  { name: 'May', total: 2700 },
+  { name: 'Jun', total: 3000 },
+]
+
+export default function DashboardPage() {
   return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
-      <h1>Email : {data?.user?.email}</h1>
-      <LogoutButton />
-      <main className="row-start-2 flex flex-col items-center gap-8 sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-center font-[family-name:var(--font-geist-mono)] text-sm sm:text-left">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="rounded bg-black/[.05] px-1 py-0.5 font-semibold dark:bg-white/[.06]">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex flex-col items-center gap-4 sm:flex-row">
-          <a
-            className="flex h-10 items-center justify-center gap-2 rounded-full border border-solid border-transparent bg-foreground px-4 text-sm text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] sm:h-12 sm:px-5 sm:text-base"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="flex h-10 items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm transition-colors hover:border-transparent hover:bg-[#f2f2f2] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] sm:h-12 sm:min-w-44 sm:px-5 sm:text-base"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="space-y-8">
+      <h1 className="text-3xl font-bold">Dashboard</h1>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {metrics.map((metric) => (
+          <MetricCard key={metric.title} {...metric} />
+        ))}
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <div className="col-span-4">
+          <h2 className="mb-4 text-xl font-semibold">Recent Invoices</h2>
+          <RecentInvoices invoices={recentInvoices} />
         </div>
-      </main>
-      <footer className="row-start-3 flex flex-wrap items-center justify-center gap-6">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="/invoice"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to Invoices page →
-        </a>
-      </footer>
+        <div className="col-span-3">
+          <h2 className="mb-4 text-xl font-semibold">Revenue Overview</h2>
+          <InvoiceChart data={chartData} />
+        </div>
+      </div>
     </div>
-  );
+  )
 }
+
