@@ -6,11 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signup } from "../actions/signup";
 import { login } from "../actions/login";
-import {
-  handleAuthProvider
-} from "../actions/login-provider";
+import { handleAuthProvider } from "../actions/login-provider";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import FormSubmitButton from "@/components/common/form-submit-button";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
   context?: "login" | "signup";
@@ -25,13 +24,15 @@ export function UserAuthForm({
 
   async function onSubmit(data: FormData) {
     if (context === "login") {
-      await login(data);
+      const { errorMessage } = await login(data);
+      if (errorMessage) toast.error(errorMessage);
     } else {
       const signupData = await signup(data);
       if (signupData?.user)
         toast.success(
           "A confirmation mail has been sent to your email address."
         );
+      else toast.error("Failed to sign up. Please try again.");
     }
   }
 
@@ -66,14 +67,7 @@ export function UserAuthForm({
             required
           />
         </div>
-        <Button
-          type="submit"
-          formAction={onSubmit}
-          // disabled={isLoading}
-        >
-          {/* {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />} */}
-          Continue
-        </Button>
+        <FormSubmitButton onSubmit={onSubmit} label="Continue" />
       </div>
 
       <div className="relative">
@@ -92,11 +86,7 @@ export function UserAuthForm({
         className="w-full"
         onClick={() => handleAuthProvider("github")}
       >
-        {/* {isLoading ? (
-          <Loader className="mr-2 h-4 w-4 animate-spin" />
-        ) : ( */}
         <GitHubLogoIcon className="mr-2 h-4 w-4" />
-        {/* )}{" "} */}
         GitHub
       </Button>
     </form>

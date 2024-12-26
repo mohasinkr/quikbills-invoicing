@@ -1,4 +1,4 @@
-import LogoutButton from "@/components/ui/logout-button";
+import LogoutButton from "@/components/common/logout-button";
 import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
