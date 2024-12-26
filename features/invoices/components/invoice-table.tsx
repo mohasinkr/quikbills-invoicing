@@ -53,7 +53,7 @@ const InvoiceTable = ({ invoices, customerNames }: InvoiceTableProps) => {
   );
 
   return (
-    <Table>
+    <Table id="invoice-table">
       <TableHeader>
         <TableRow>
           {TABLE_HEADERS.map((header) => (
