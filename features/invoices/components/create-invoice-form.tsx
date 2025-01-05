@@ -86,7 +86,7 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
             form={form}
             hideIcon
             options={customerNames}
-            emptyMessage="Add kevin?"
+            // emptyMessage="Add kevin?"
           />
         </div>
 

@@ -6,6 +6,7 @@ import { Skeleton } from "./skeleton";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
+  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -29,7 +30,7 @@ type AutoCompleteProps = {
   name: string;
   hideIcon?: boolean;
   options: Option[];
-  emptyMessage?: string;
+  // emptyMessage?: string;
   isLoading?: boolean;
   disabled?: boolean;
   placeholder?: string;

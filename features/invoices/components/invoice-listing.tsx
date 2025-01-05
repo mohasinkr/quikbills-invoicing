@@ -1,11 +1,8 @@
 import { InvoiceWithCustomer } from "@/schema/types";
 import CreateInvoiceDialog from "./create-invoice-dialog";
 import InvoiceTable from "./invoice-table";
-import { Button } from "@/components/ui/button";
-import { LogOutIcon } from "lucide-react";
 import { getCustomers } from "@/lib/db/customers/get-customers";
 import DownloadInvoice from "./download-as-pdf";
-import { logout } from "@/features/auth/actions/logout";
 import LogoutButton from "@/components/common/logout-button";
 
 export default async function InvoiceListing({

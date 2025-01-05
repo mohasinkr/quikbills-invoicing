@@ -3,7 +3,7 @@ import { Home, FileText, Users, Settings } from 'lucide-react'
 
 const navItems = [
   { href: '/dashboard', icon: Home, label: 'Dashboard' },
-  { href: '/dashboard/invoices', icon: FileText, label: 'Invoices' },
+  { href: '/invoice', icon: FileText, label: 'Invoices' },
   { href: '/dashboard/customers', icon: Users, label: 'Customers' },
   { href: '/dashboard/settings', icon: Settings, label: 'Settings' },
 ]
