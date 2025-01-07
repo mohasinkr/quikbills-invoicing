@@ -10,6 +10,8 @@ import { handleAuthProvider } from "../actions/login-provider";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import FormSubmitButton from "@/components/common/form-submit-button";
+import { useTransition } from "react";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
   context?: "login" | "signup";
@@ -20,7 +22,7 @@ export function UserAuthForm({
   className,
   ...props
 }: UserAuthFormProps) {
-  // const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isGithubAuthPending, startTransition] = useTransition();
 
   async function onSubmit(data: FormData) {
     if (context === "login") {
@@ -84,10 +86,16 @@ export function UserAuthForm({
         variant="outline"
         type="button"
         className="w-full"
-        onClick={() => handleAuthProvider("github")}
+        disabled={isGithubAuthPending}
+        onClick={() => startTransition(() => handleAuthProvider("github"))}
       >
-        <GitHubLogoIcon className="mr-2 h-4 w-4" />
-        GitHub
+        {isGithubAuthPending ? (
+          <LoadingSpinner spinnerClassName="text-black" />
+        ) : (
+          <>
+            <GitHubLogoIcon className="mr-2 h-4 w-4" /> Github
+          </>
+        )}
       </Button>
     </form>
   );
