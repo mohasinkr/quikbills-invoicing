@@ -15,6 +15,7 @@ const InvoicePage = async () => {
   const { data: invoices } = await supabase
     .from("invoices")
     .select(`*, customers(name)`)
+    .order("id")
     .returns<InvoiceWithCustomer[]>();
 
   if (!invoices) {
