@@ -12,7 +12,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        mono: ["var(--font-roboto-mono)"],
+        sans: ["var(--font-lato), sans-serif"],
       },
       colors: {
         background: "hsl(var(--background))",
