@@ -1,3 +1,4 @@
+import { DashboardIcon } from "@radix-ui/react-icons";
 import { Receipt, Settings, Truck, Users } from "lucide-react";
 
 // Payment Status Constants
@@ -35,6 +36,12 @@ export const DEFAULT_CURRENCY = {
 } as const;
 
 export const SIDEBAR_ITEMS = [ 
+  {
+    icon: DashboardIcon,
+    label: "Dashboard",
+    href: "/",
+    description: "Manage your invoices",
+  },
   {
     icon: Receipt,
     label: "Invoices",

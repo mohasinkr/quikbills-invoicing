@@ -4,15 +4,15 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { SIDEBAR_ITEMS } from "@/utils/constants";
-import {
-    ChevronLeft,
-    Wallet
-} from "lucide-react";
+import { ChevronLeft, Wallet } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import * as React from "react";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
+
+  const pathname = usePathname();
 
   return (
     <div
@@ -22,13 +22,13 @@ const Sidebar = () => {
         isCollapsed ? "w-[90px]" : "w-[250px]"
       )}
     >
-      <div className="flex h-[60px] gap-2 items-center border-b px-4">
+      <div className="flex h-[60px] items-center gap-2 border-b px-4">
         {/* logo */}
         <div className="flex items-center gap-2 overflow-hidden">
           <Wallet className="h-6 w-6 flex-shrink-0 text-primary" />
           <span
             className={cn(
-              "font-semibold transition-[transform,opacity] duration-200 whitespace-nowrap",
+              "whitespace-nowrap font-semibold transition-[transform,opacity] duration-200",
               isCollapsed
                 ? "-translate-x-8 transform opacity-0"
                 : "translate-x-0 transform opacity-100"
@@ -52,26 +52,32 @@ const Sidebar = () => {
         </Button>
       </div>
 
-      <ScrollArea className="flex-1 px-3 space-y-2">
+      <ScrollArea className="flex-1 space-y-2 px-3">
         {/* <div className="space-y-2 py-4"> */}
-          {SIDEBAR_ITEMS.map((item) => (
-            <Link href={item.href} key={item.href}>
-              <Button variant="ghost" className="text-base h-12 w-full justify-start">
-                <item.icon className="flex-shrink-0 w-6 h-6" />
-                <span
-                  className={cn(
-                    "font-semibold transition-[transform,opacity] duration-200",
-                    "whitespace-nowrap pl-3",
-                    isCollapsed
-                      ? "translate-x-12 transform opacity-0"
-                      : "translate-x-0 transform opacity-100"
-                  )}
-                >
-                  {item.label}
-                </span>
-              </Button>
-            </Link>
-          ))}
+        {SIDEBAR_ITEMS.map((item) => (
+          <Link href={item.href} key={item.href}>
+            <Button
+              variant="ghost"
+              className={cn(
+                "h-12 w-full justify-start text-base",
+                pathname === item.href && "bg-gray-200"
+              )}
+            >
+              <item.icon className="h-6 w-6 flex-shrink-0" />
+              <span
+                className={cn(
+                  "font-semibold transition-[transform,opacity] duration-200",
+                  "whitespace-nowrap pl-3",
+                  isCollapsed
+                    ? "translate-x-12 transform opacity-0"
+                    : "translate-x-0 transform opacity-100"
+                )}
+              >
+                {item.label}
+              </span>
+            </Button>
+          </Link>
+        ))}
         {/* </div> */}
       </ScrollArea>
 

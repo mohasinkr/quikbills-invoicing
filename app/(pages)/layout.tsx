@@ -1,5 +1,4 @@
 import Sidebar from "@/components/ui/sidebar";
-import { usePathname } from "next/navigation";
 
 export default function PagesLayout({
   children,
