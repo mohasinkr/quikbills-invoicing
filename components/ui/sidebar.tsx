@@ -1,51 +1,18 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import { SIDEBAR_ITEMS } from "@/utils/constants";
 import {
-  Receipt,
-  Users,
-  Settings,
-  Truck,
-  ChevronLeft,
-  Plus,
-  Building2,
-  Wallet,
+    ChevronLeft,
+    Wallet
 } from "lucide-react";
-import LogoutButton from "../common/logout-button";
+import Link from "next/link";
+import * as React from "react";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
-
-  const menuItems = [
-    {
-      icon: Receipt,
-      label: "Invoices",
-      href: "/invoices",
-      description: "Manage your invoices",
-    },
-    {
-      icon: Users,
-      label: "Customers",
-      href: "/customers",
-      description: "View and manage customers",
-    },
-    {
-      icon: Truck,
-      label: "Suppliers",
-      href: "/suppliers",
-      description: "Manage your suppliers",
-    },
-    {
-      icon: Settings,
-      label: "Settings",
-      href: "/settings",
-      description: "System preferences",
-    },
-  ];
 
   return (
     <div
@@ -87,7 +54,7 @@ const Sidebar = () => {
 
       <ScrollArea className="flex-1 px-3 space-y-2">
         {/* <div className="space-y-2 py-4"> */}
-          {menuItems.map((item) => (
+          {SIDEBAR_ITEMS.map((item) => (
             <Link href={item.href} key={item.href}>
               <Button variant="ghost" className="text-base h-12 w-full justify-start">
                 <item.icon className="flex-shrink-0 w-6 h-6" />

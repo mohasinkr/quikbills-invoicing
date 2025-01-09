@@ -1,3 +1,5 @@
+import { Receipt, Settings, Truck, Users } from "lucide-react";
+
 // Payment Status Constants
 export const PAYMENT_STATUS = {
   PAID: "paid",
@@ -31,3 +33,30 @@ export const DEFAULT_CURRENCY = {
   SYMBOL: "₹",
   LOCALE: "en-IN"
 } as const;
+
+export const SIDEBAR_ITEMS = [ 
+  {
+    icon: Receipt,
+    label: "Invoices",
+    href: "/invoice",
+    description: "Manage your invoices",
+  },
+  {
+    icon: Users,
+    label: "Customers",
+    href: "/customers",
+    description: "View and manage customers",
+  },
+  {
+    icon: Truck,
+    label: "Suppliers",
+    href: "/suppliers",
+    description: "Manage your suppliers",
+  },
+  {
+    icon: Settings,
+    label: "Settings",
+    href: "/settings",
+    description: "System preferences",
+  },
+];
