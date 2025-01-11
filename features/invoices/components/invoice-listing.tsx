@@ -24,7 +24,7 @@ export default async function InvoiceListing({
         </Button> */}
         <LogoutButton />
       </header>
-      <section className="flex gap-x-4">
+      <section className="flex gap-x-4 mb-5">
         <CreateInvoiceDialog customerNames={customerNames}/>
         <DownloadInvoice />
       </section>

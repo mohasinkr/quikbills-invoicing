@@ -24,7 +24,7 @@ const DialogForm = ({ form, trigger, title }: DialogFormProps) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild className="mb-4">
+      <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>
       <DialogContent>
