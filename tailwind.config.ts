@@ -12,7 +12,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-lato), sans-serif"],
+        sans: ["var(--font-manrope), sans-serif"],
       },
       colors: {
         background: "hsl(var(--background))",

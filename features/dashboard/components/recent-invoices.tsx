@@ -5,18 +5,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from "@/components/ui/table";
 
 interface Invoice {
-  id: string
-  customer: string
-  amount: number
-  status: 'paid' | 'pending' | 'overdue'
-  date: string
+  id: string;
+  customer: string;
+  amount: number;
+  status: "paid" | "pending" | "overdue";
+  date: string;
 }
 
 interface RecentInvoicesProps {
-  invoices: Invoice[]
+  invoices: Invoice[];
 }
 
 export function RecentInvoices({ invoices }: RecentInvoicesProps) {
@@ -43,6 +43,5 @@ export function RecentInvoices({ invoices }: RecentInvoicesProps) {
         ))}
       </TableBody>
     </Table>
-  )
+  );
 }
-

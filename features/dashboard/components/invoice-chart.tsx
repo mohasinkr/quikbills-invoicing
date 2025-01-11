@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 interface ChartData {
-  name: string
-  total: number
+  name: string;
+  total: number;
 }
 
 interface InvoiceChartProps {
-  data: ChartData[]
+  data: ChartData[];
 }
 
 export function InvoiceChart({ data }: InvoiceChartProps) {
@@ -32,6 +32,5 @@ export function InvoiceChart({ data }: InvoiceChartProps) {
         <Bar dataKey="total" fill="lightblue" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
-  )
+  );
 }
-

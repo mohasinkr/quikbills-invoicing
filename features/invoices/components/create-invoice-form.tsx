@@ -104,6 +104,10 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
           )}
         />
 
+        <DatePicker form={form} name="due_date" label="Due Date" />
+
+        <MoneyInput form={form} label="Unit Price" name="unit_price" />
+
         <FormField
           control={form.control}
           name="quantity"
@@ -128,10 +132,6 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
             </FormItem>
           )}
         />
-
-        <DatePicker form={form} name="due_date" label="Due Date" />
-
-        <MoneyInput form={form} label="Unit Price" name="unit_price" />
 
         <FormField
           control={form.control}

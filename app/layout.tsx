@@ -1,12 +1,11 @@
 import "./globals.css";
 
 import { Toaster } from "@/components/ui/sonner";
-import { Lato } from "next/font/google";
+import { Manrope } from "next/font/google";
 
-const lato = Lato({
-  variable: "--font-lato",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
-  weight: ["100", "300", "400", "700", "900"],
   display: "swap",
 });
 
@@ -16,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${lato.variable}`}>
+    <html lang="en" className={`${manrope.variable}`}>
       <body>
         <main className="h-screen bg-white">{children}</main>
         <Toaster position="top-right" />

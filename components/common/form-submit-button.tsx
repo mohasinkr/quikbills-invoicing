@@ -4,7 +4,7 @@ import LoadingSpinner from "../ui/loading-spinner";
 
 const FormSubmitButton = ({
   onSubmit,
-  label
+  label,
 }: {
   onSubmit: (formData: FormData) => void | Promise<void>;
   label?: string;

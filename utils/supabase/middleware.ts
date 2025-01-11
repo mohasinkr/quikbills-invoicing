@@ -2,7 +2,12 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
-  const unprotectedPaths = ["/login", "/signup", "/api/auth/callback", "/api/auth/confirm"];
+  const unprotectedPaths = [
+    "/login",
+    "/signup",
+    "/api/auth/callback",
+    "/api/auth/confirm",
+  ];
 
   let supabaseResponse = NextResponse.next({
     request,

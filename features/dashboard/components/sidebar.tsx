@@ -1,12 +1,12 @@
-import Link from 'next/link'
-import { Home, FileText, Users, Settings } from 'lucide-react'
+import Link from "next/link";
+import { Home, FileText, Users, Settings } from "lucide-react";
 
 const navItems = [
-  { href: '/dashboard', icon: Home, label: 'Dashboard' },
-  { href: '/invoice', icon: FileText, label: 'Invoices' },
-  { href: '/dashboard/customers', icon: Users, label: 'Customers' },
-  { href: '/dashboard/settings', icon: Settings, label: 'Settings' },
-]
+  { href: "/dashboard", icon: Home, label: "Dashboard" },
+  { href: "/invoice", icon: FileText, label: "Invoices" },
+  { href: "/dashboard/customers", icon: Users, label: "Customers" },
+  { href: "/dashboard/settings", icon: Settings, label: "Settings" },
+];
 
 export function DashboardSidebar() {
   return (
@@ -24,6 +24,5 @@ export function DashboardSidebar() {
         ))}
       </nav>
     </aside>
-  )
+  );
 }
-

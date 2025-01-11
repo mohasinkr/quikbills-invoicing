@@ -32,10 +32,10 @@ const DownloadInvoice = () => {
           // Ensure all elements are visible in cloned document
           const clonedElement = clonedDoc.getElementById("invoice-table");
           if (clonedElement) {
-            clonedElement.style.height = 'auto';
-            clonedElement.style.overflow = 'visible';
+            clonedElement.style.height = "auto";
+            clonedElement.style.overflow = "visible";
           }
-        }
+        },
       });
 
       // PDF configuration
@@ -51,11 +51,11 @@ const DownloadInvoice = () => {
       const margins = 10; // 10mm margins
 
       // Calculate image dimensions maintaining aspect ratio
-      const imgWidth = pdfWidth - (margins * 2);
+      const imgWidth = pdfWidth - margins * 2;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       // If content is taller than page, create multiple pages
-      if (imgHeight > pdfHeight - (margins * 2)) {
+      if (imgHeight > pdfHeight - margins * 2) {
         let remainingHeight = canvas.height;
         let currentPosition = 0;
 
@@ -68,7 +68,7 @@ const DownloadInvoice = () => {
           // Calculate height for current page
           const pageHeight = Math.min(
             remainingHeight,
-            (pdfHeight - (margins * 2)) * (canvas.width / imgWidth)
+            (pdfHeight - margins * 2) * (canvas.width / imgWidth)
           );
 
           pdf.addImage(
@@ -101,9 +101,8 @@ const DownloadInvoice = () => {
       }
 
       // Generate file name with timestamp
-      const fileName = `invoice-${new Date().toISOString().split('T')[0]}.pdf`;
+      const fileName = `invoice-${new Date().toISOString().split("T")[0]}.pdf`;
       pdf.save(fileName);
-
     } catch (error) {
       console.error("Error generating PDF:", error);
       // You might want to add proper error handling/notification here
@@ -113,19 +112,13 @@ const DownloadInvoice = () => {
   };
 
   return (
-    <Button 
-      onClick={downloadPDF} 
-      disabled={isGenerating}
-      className="gap-2"
-    >
+    <Button onClick={downloadPDF} disabled={isGenerating} className="gap-2">
       {isGenerating ? (
         <Loader2 className="h-4 w-4 animate-spin" />
       ) : (
         <DownloadIcon className="h-4 w-4" />
       )}
-      <span>
-        {isGenerating ? "Generating PDF..." : "Download Invoice"}
-      </span>
+      <span>{isGenerating ? "Generating PDF..." : "Download Invoice"}</span>
     </Button>
   );
 };
