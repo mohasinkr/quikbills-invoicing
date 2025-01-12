@@ -11,7 +11,7 @@ import {
 
 type DialogFormProps = {
   form: JSX.Element;
-  trigger: React.ReactNode;
+  trigger: React.ReactNode | React.ReactNode[];
   title: string;
 };
 

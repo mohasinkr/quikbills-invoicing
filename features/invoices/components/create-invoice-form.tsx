@@ -147,7 +147,7 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
           )}
         />
 
-        <FormSelect name="status" form={form}>
+        <FormSelect name="status" form={form} placeholder="Status">
           <SelectItem value="paid">Paid</SelectItem>
           <SelectItem value="unpaid">Unpaid</SelectItem>
           <SelectItem value="overdue">Overdue</SelectItem>

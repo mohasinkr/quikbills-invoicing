@@ -68,3 +68,8 @@ export const SIDEBAR_ITEMS = [
     description: "System preferences",
   },
 ];
+
+export const SUCCESS_MESSAGES = {
+  CUSTOMER_CREATED: "Customer created successfully",
+  INVOICE_CREATED: "Invoice created successfully",
+};

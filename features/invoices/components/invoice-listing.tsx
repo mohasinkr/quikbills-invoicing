@@ -1,34 +1,27 @@
-import { InvoiceWithCustomer } from "@/schema/types";
+import { fetchCustomers } from "@/lib/db/customers/get-customers";
+import { fetchInvoices } from "@/lib/db/invoices/get-invoices";
 import CreateInvoiceDialog from "./create-invoice-dialog";
-import InvoiceTable from "./invoice-table";
-import { getCustomers } from "@/lib/db/customers/get-customers";
 import DownloadInvoice from "./download-as-pdf";
-import LogoutButton from "@/components/common/logout-button";
+import InvoiceTable from "./invoice-table";
 
-export default async function InvoiceListing({
-  invoices,
-}: {
-  invoices: InvoiceWithCustomer[];
-}) {
+export default async function InvoiceListing() {
   // mapping the customer names to an array
-  const customerNames = (await getCustomers(["name", "customer_id"])).map(
+  const customerNames = (await fetchCustomers(["name", "customer_id"])).map(
     (customer) => ({ name: customer.name, value: customer.customer_id })
   );
 
+  const invoices = await fetchInvoices();
+  if (!invoices) {
+    return <div>No invoices found</div>;
+  }
+
   return (
-    <div className="container mx-auto p-4">
-      <header className="mb-8 flex justify-between">
-        <h1 className="text-3xl font-bold text-primary">Invoices</h1>
-        {/* <Button>
-          <LogOutIcon /> Logout
-        </Button> */}
-        <LogoutButton />
-      </header>
+    <>
       <section className="mb-5 flex gap-x-4">
         <CreateInvoiceDialog customerNames={customerNames} />
         <DownloadInvoice />
       </section>
       <InvoiceTable invoices={invoices} customerNames={customerNames} />
-    </div>
+    </>
   );
 }

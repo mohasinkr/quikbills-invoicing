@@ -1,9 +1,10 @@
-import CreateInvoiceForm from "./create-invoice-form";
+import ButtonWithIcon from "@/components/ui/button-with-icon";
 import DialogForm from "@/components/ui/dialog-form";
-import AddButton from "@/components/ui/add-button";
 import { TCustomerNames } from "@/schema/types";
+import { PlusIcon } from "lucide-react";
+import CreateInvoiceForm from "./create-invoice-form";
 
-const CreateInvoiceDialog = async ({
+const CreateInvoiceDialog = ({
   customerNames,
 }: {
   customerNames: TCustomerNames;
@@ -11,7 +12,7 @@ const CreateInvoiceDialog = async ({
   return (
     <DialogForm
       title="Create Invoice"
-      trigger={<AddButton title="Create New Invoice" />}
+      trigger={<ButtonWithIcon icon={PlusIcon}>Create Invoice</ButtonWithIcon>}
       form={<CreateInvoiceForm customerNames={customerNames} />}
     />
   );

@@ -66,7 +66,7 @@ const Sidebar = () => {
               <item.icon className="h-6 w-6 flex-shrink-0" />
               <span
                 className={cn(
-                  "font-semibold transition-[transform,opacity] duration-200",
+                  "transition-[transform,opacity] duration-200",
                   "whitespace-nowrap pl-3",
                   isCollapsed
                     ? "translate-x-12 transform opacity-0"
