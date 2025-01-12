@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import FormSubmitButton from "@/components/common/form-submit-button";
 import { useTransition } from "react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
+import { useSearchParams } from "next/navigation";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
   context?: "login" | "signup";
@@ -22,6 +23,9 @@ export function UserAuthForm({
   className,
   ...props
 }: UserAuthFormProps) {
+  const searchParams = useSearchParams();
+  const bypassAuth = searchParams.get("bypassAuth");
+
   const [isGithubAuthPending, startTransition] = useTransition();
 
   async function onSubmit(data: FormData) {
@@ -53,6 +57,7 @@ export function UserAuthForm({
             autoCapitalize="none"
             autoComplete="email"
             autoCorrect="off"
+            defaultValue={bypassAuth ? process.env.DEFAULT_EMAIL : ""}
             required
           />
         </div>
@@ -66,6 +71,7 @@ export function UserAuthForm({
             placeholder="******"
             type="password"
             autoCapitalize="none"
+            defaultValue={bypassAuth ? process.env.DEFAULT_PASSWORD : ""}
             required
           />
         </div>
