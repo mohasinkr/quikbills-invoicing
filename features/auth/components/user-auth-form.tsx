@@ -57,7 +57,7 @@ export function UserAuthForm({
             autoCapitalize="none"
             autoComplete="email"
             autoCorrect="off"
-            defaultValue={bypassAuth ? process.env.DEFAULT_EMAIL : ""}
+            defaultValue={bypassAuth ? process.env.NEXT_PUBLIC_DEFAULT_EMAIL : ""}
             required
           />
         </div>
@@ -71,7 +71,7 @@ export function UserAuthForm({
             placeholder="******"
             type="password"
             autoCapitalize="none"
-            defaultValue={bypassAuth ? process.env.DEFAULT_PASSWORD : ""}
+            defaultValue={bypassAuth ? process.env.NEXT_PUBLIC_DEFAULT_PASSWORD : ""}
             required
           />
         </div>
