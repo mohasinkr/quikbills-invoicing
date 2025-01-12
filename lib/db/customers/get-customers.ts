@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 type CustomerColumns = keyof Customer;
 type SelectColumns = CustomerColumns | "*" | CustomerColumns[];
 
-export const getCustomers = async (columns: SelectColumns = "*") => {
+export const fetchCustomers = async (columns: SelectColumns = "*") => {
   const supabase = await createClient();
 
   const selectColumns = Array.isArray(columns) ? columns.join(",") : columns;

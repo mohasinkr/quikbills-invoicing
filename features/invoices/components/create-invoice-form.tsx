@@ -86,7 +86,7 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
             form={form}
             hideIcon
             options={customerNames}
-            emptyMessage="Add kevin?"
+            // emptyMessage="Add kevin?"
           />
         </div>
 
@@ -103,6 +103,10 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
             </FormItem>
           )}
         />
+
+        <DatePicker form={form} name="due_date" label="Due Date" />
+
+        <MoneyInput form={form} label="Unit Price" name="unit_price" />
 
         <FormField
           control={form.control}
@@ -129,10 +133,6 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
           )}
         />
 
-        <DatePicker form={form} name="due_date" label="Due Date" />
-
-        <MoneyInput form={form} label="Unit Price" name="unit_price" />
-
         <FormField
           control={form.control}
           name="total"
@@ -147,7 +147,7 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
           )}
         />
 
-        <FormSelect name="status" form={form}>
+        <FormSelect name="status" form={form} placeholder="Status">
           <SelectItem value="paid">Paid</SelectItem>
           <SelectItem value="unpaid">Unpaid</SelectItem>
           <SelectItem value="overdue">Overdue</SelectItem>

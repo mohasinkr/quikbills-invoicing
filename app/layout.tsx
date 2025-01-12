@@ -1,11 +1,12 @@
-import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
 
-const roboto_mono = Roboto_Mono({
+import { Toaster } from "@/components/ui/sonner";
+import { Manrope } from "next/font/google";
+
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-roboto-mono",
 });
 
 export default function RootLayout({
@@ -14,9 +15,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${roboto_mono.variable}`}>
+    <html lang="en" className={`${manrope.variable}`}>
       <body>
-        <main>{children}</main>
+        <main className="h-screen bg-white">{children}</main>
         <Toaster position="top-right" />
       </body>
     </html>

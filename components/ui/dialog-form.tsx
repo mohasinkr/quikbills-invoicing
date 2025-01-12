@@ -11,7 +11,7 @@ import {
 
 type DialogFormProps = {
   form: JSX.Element;
-  trigger: React.ReactNode;
+  trigger: React.ReactNode | React.ReactNode[];
   title: string;
 };
 
@@ -24,9 +24,7 @@ const DialogForm = ({ form, trigger, title }: DialogFormProps) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild className="mb-4">
-        {trigger}
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>

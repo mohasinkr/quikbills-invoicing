@@ -1,4 +1,4 @@
-import { Database, Tables } from "./schema";
+import { Tables } from "./supabaseTypes";
 
 export type Invoice = Tables<"invoices">;
 export type Customer = Tables<"customers">;
