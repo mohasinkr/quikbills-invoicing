@@ -7,6 +7,7 @@ import { UserAuthForm } from "@/features/auth/components/user-auth-form";
 import { buttonVariants } from "@/components/ui/button";
 
 import authImage from "/public/images/auth-left.png";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Authentication",
@@ -36,7 +37,9 @@ export default function SignUpPage() {
               Enter your email below to create your account
             </p>
           </div>
-          <UserAuthForm context="signup" />
+          <Suspense fallback={<div>Loading...</div>}>
+            <UserAuthForm context="signup" />
+          </Suspense>
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
             <Link

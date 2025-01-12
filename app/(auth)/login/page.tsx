@@ -7,6 +7,7 @@ import { UserAuthForm } from "@/features/auth/components/user-auth-form";
 import { buttonVariants } from "@/components/ui/button";
 
 import authImage from "/public/images/auth-left.png";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Login to quikBills Invoicing",
@@ -31,7 +32,9 @@ export default function LoginPage() {
           <h1 className="text-center text-2xl font-semibold tracking-tight">
             Login to quikBills Invoicing
           </h1>
-          <UserAuthForm context="login" />
+          <Suspense fallback={<div>Loading...</div>}>
+            <UserAuthForm context="login" />
+          </Suspense>
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
             <Link
