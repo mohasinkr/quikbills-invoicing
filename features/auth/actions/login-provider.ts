@@ -10,7 +10,8 @@ export async function handleAuthProvider(provider: OAuthProvider) {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: "http://localhost:3000/api/auth/callback",
+      redirectTo: process.env.NODE_ENV === "development" ? 
+      "http://localhost:3000/api/auth/callback" : "https://quikbills-invoicing.vercel.app/api/auth/callback",
     },
   });
 
