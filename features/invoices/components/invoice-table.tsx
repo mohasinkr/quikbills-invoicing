@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { useOptimistic } from "react";
 import { cn } from "@/lib/utils";
 
-export type OptimisticAction = {
+type OptimisticAction = {
   type: "DELETE" | "UPDATE";
   id: number;
   status?: string;
@@ -85,9 +85,9 @@ const InvoiceTable = ({ invoices, customerNames }: InvoiceTableProps) => {
                 invoice={invoice}
               />
             </TableCell>
-            {invoice?.actionStatus && (
+            {invoice.actionStatus && (
               <TableCell>
-                <Badge variant={"destructive"}>{invoice.actionStatus}</Badge>
+                <Badge variant="destructive">{invoice.actionStatus}</Badge>
               </TableCell>
             )}
           </TableRow>

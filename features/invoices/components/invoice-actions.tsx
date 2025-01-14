@@ -1,17 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CheckIcon, EditIcon, XIcon, LoaderIcon } from "lucide-react";
-import { deleteInvoice } from "../actions/delete-invoice";
-import { toast } from "sonner";
-import { useTransition } from "react";
-import { cn } from "@/lib/utils";
-import { OptimisticAction } from "./invoice-table";
 import DialogForm from "@/components/ui/dialog-form";
-import EditInvoiceForm from "./edit-invoice-form";
-import { InvoiceWithCustomer, TCustomerNames } from "@/schema/types";
-import { updateInvoice } from "../actions/update-invoice";
 import LoadingSpinner from "@/components/ui/loading-spinner";
+import { cn } from "@/lib/utils";
+import { InvoiceWithCustomer, TCustomerNames } from "@/schema/types";
+import { CheckIcon, EditIcon, TicketX, XIcon } from "lucide-react";
+import { useTransition } from "react";
+import { toast } from "sonner";
+import { deleteInvoice } from "../actions/delete-invoice";
+import { updateInvoice } from "../actions/update-invoice";
+import EditInvoiceForm from "./edit-invoice-form";
+import { OptimisticAction } from "./invoice-table";
 
 interface InvoiceActionsProps {
   customerNames: TCustomerNames;
@@ -23,14 +23,11 @@ const InvoiceActions = ({
   customerNames,
   invoice,
   doOptimisticUpdate,
-  // isDeleting,
 }: InvoiceActionsProps) => {
-  const [isPendingDeletion, startDeleteTransition] = useTransition();
+  const [isPendingDelete, startDeleteTransition] = useTransition();
   const [isPendingStatusChange, startStatusTransition] = useTransition();
 
-  async function handleDeleteInvoice() {
-    if (isPendingDeletion) return;
-
+  const handleDeleteInvoice = () => {
     startDeleteTransition(async () => {
       doOptimisticUpdate({
         type: "DELETE",
@@ -54,28 +51,22 @@ const InvoiceActions = ({
         toast.error("Failed to delete invoice");
       }
     });
-  }
+  };
 
-  async function handleMarkAsPaid() {
-    console.log("handleMarkAsPaid");
-    if (isPendingStatusChange) return;
-
+  const handleInvoiceStatusChange = (status: "paid" | "unpaid") => {
     startStatusTransition(async () => {
       try {
-        const response = await updateInvoice({
-          id: invoice.id,
-          status: "paid",
-        });
+        const response = await updateInvoice({ id: invoice.id, status });
         if (response.status === 200) {
-          toast.success("Invoice marked as paid");
+          toast.info(`Invoice marked as ${status}`);
         } else {
-          toast.error(`Failed to mark invoice as paid`);
+          throw new Error("Failed to update invoice status");
         }
       } catch (error) {
-        toast.error("Failed to mark invoice as paid");
+        toast.error("Failed to update invoice status");
       }
     });
-  }
+  };
 
   return (
     <div className="flex space-x-2">
@@ -90,29 +81,44 @@ const InvoiceActions = ({
           <EditInvoiceForm invoice={invoice} customerNames={customerNames} />
         }
       />
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handleMarkAsPaid}
-        disabled={isPendingDeletion}
-      >
-        {isPendingStatusChange ? (
-          <LoadingSpinner spinnerClassName="w-4 h-4 text-black" />
-        ) : (
-          <CheckIcon className="h-4 w-4" />
-        )}
-      </Button>
+      {invoice.status !== "paid" ? (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => handleInvoiceStatusChange("paid")}
+          disabled={isPendingStatusChange}
+        >
+          {isPendingStatusChange ? (
+            <LoadingSpinner spinnerClassName="w-4 h-4 text-black" />
+          ) : (
+            <CheckIcon className="h-4 w-4" />
+          )}
+        </Button>
+      ) : (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => handleInvoiceStatusChange("unpaid")}
+          disabled={isPendingStatusChange}
+        >
+          {isPendingStatusChange ? (
+            <LoadingSpinner spinnerClassName="w-4 h-4 text-black" />
+          ) : (
+            <TicketX className="h-4 w-4" />
+          )}
+        </Button>
+      )}
       <Button
         variant="outline"
         size="sm"
         onClick={handleDeleteInvoice}
-        disabled={isPendingDeletion}
+        disabled={isPendingDelete}
         className={cn(
           "transition-all duration-200",
-          isPendingDeletion && "animate-pulse"
+          isPendingDelete && "animate-pulse"
         )}
       >
-        {isPendingDeletion ? (
+        {isPendingDelete ? (
           <LoadingSpinner spinnerClassName="w-4 h-4 text-black" />
         ) : (
           <XIcon className="h-4 w-4" />
