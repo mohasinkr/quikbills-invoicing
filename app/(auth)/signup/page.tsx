@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
-import { UserAuthForm } from "@/features/auth/components/user-auth-form";
+import { UserAuthForm } from "@/components/auth/user-auth-form";
 import { buttonVariants } from "@/components/ui/button";
 
 import authImage from "/public/images/auth-left.png";

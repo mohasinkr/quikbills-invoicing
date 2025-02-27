@@ -8,9 +8,9 @@ import { InvoiceWithCustomer, TCustomerNames } from "@/schema/types";
 import { CheckIcon, EditIcon, TicketX, XIcon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { deleteInvoice } from "../actions/delete-invoice";
-import { updateInvoice } from "../actions/update-invoice";
 import EditInvoiceForm from "./edit-invoice-form";
+import { deleteInvoice } from "@/actions/invoice/delete-invoice";
+import { updateInvoice } from "@/actions/invoice/update-invoice";
 import { OptimisticAction } from "./invoice-table";
 
 interface InvoiceActionsProps {

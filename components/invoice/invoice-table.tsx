@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { useOptimistic } from "react";
 import { cn } from "@/lib/utils";
 
-type OptimisticAction = {
+export type OptimisticAction = {
   type: "DELETE" | "UPDATE";
   id: number;
   status?: string;

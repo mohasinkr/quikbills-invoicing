@@ -18,13 +18,13 @@ import {
 } from "@/components/ui/form";
 import DatePicker from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
-import { createInvoice } from "../actions/create-invoice";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import FormSelect from "@/components/ui/form-select";
 import { TCustomerNames } from "@/schema/types";
+import { createInvoice } from "@/actions/invoice/create-invoice";
 
 const schema = z.object({
   unit_price: z.coerce.number().min(0.0, "Amount is required"),

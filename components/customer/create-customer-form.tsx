@@ -19,9 +19,9 @@ import LoadingSpinner from "@/components/ui/loading-spinner";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import createCustomer from "../actions/create-customer";
 import { Input } from "@/components/ui/input";
 import { SUCCESS_MESSAGES } from "@/utils/constants";
+import createCustomer from "@/actions/customer/create-customer";
 
 const schema = z.object({
   name: z.string(),
@@ -80,7 +80,7 @@ const CreateCustomerForm = ({ setOpen }: CustomerFormProps) => {
             <FormItem>
               <FormLabel>Customer Name</FormLabel>
               <FormControl>
-                <Input type="text" {...field} placeholder="John Doe"/>
+                <Input type="text" {...field} placeholder="John Doe" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -99,7 +99,11 @@ const CreateCustomerForm = ({ setOpen }: CustomerFormProps) => {
             <FormItem>
               <FormLabel>Customer Email</FormLabel>
               <FormControl>
-                <Input type="email" {...field} placeholder="eg: abc@gmail.com" />
+                <Input
+                  type="email"
+                  {...field}
+                  placeholder="eg: abc@gmail.com"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

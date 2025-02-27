@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useState } from "react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import { updateInvoice } from "../actions/update-invoice";
 import { AutoComplete } from "@/components/ui/autocomplete";
 import { Label } from "@/components/ui/label";
 import MoneyInput from "@/components/ui/money-input";
@@ -26,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import FormSelect from "@/components/ui/form-select";
 import { SelectItem } from "@/components/ui/select";
 import { getDirtyFields } from "@/utils/get-dirty-fields";
+import { updateInvoice } from "@/actions/invoice/update-invoice";
 
 const schema = z.object({
   id: z.number(),
