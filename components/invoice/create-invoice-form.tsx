@@ -1,13 +1,9 @@
 "use client";
 
+import { createInvoice } from "@/actions/invoice/create-invoice";
 import { AutoComplete } from "@/components/ui/autocomplete";
-import { Label } from "@/components/ui/label";
-import MoneyInput from "@/components/ui/money-input";
-import { SelectItem } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import DatePicker from "@/components/ui/date-picker";
 import {
   Form,
   FormControl,
@@ -16,15 +12,19 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import DatePicker from "@/components/ui/date-picker";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import LoadingSpinner from "@/components/ui/loading-spinner";
 import FormSelect from "@/components/ui/form-select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import LoadingSpinner from "@/components/ui/loading-spinner";
+import MoneyInput from "@/components/ui/money-input";
+import { SelectItem } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { TCustomerNames } from "@/schema/types";
-import { createInvoice } from "@/actions/invoice/create-invoice";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const schema = z.object({
   unit_price: z.coerce.number().min(0.0, "Amount is required"),
@@ -97,7 +97,11 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
             <FormItem>
               <FormLabel>Item Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Enter item description" {...field} />
+                <Textarea
+                  className="resize-none"
+                  placeholder="Enter item description"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -114,20 +118,20 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Quantity</FormLabel>
-              <FormControl>
+                <FormControl>
                 <Input
                   type="number"
                   placeholder="Enter quantity"
                   {...field}
                   onChange={(e) => {
-                    form.setValue(
-                      "total",
-                      Number(e.target.value) * form.getValues("unit_price")
-                    );
-                    field.onChange(e);
+                  const quantity = Number(e.target.value);
+                  const unitPrice = form.getValues("unit_price");
+                  const total = parseFloat((quantity * unitPrice).toFixed(2));
+                  form.setValue("total", total);
+                  field.onChange(e);
                   }}
                 />
-              </FormControl>
+                </FormControl>
               <FormMessage />
             </FormItem>
           )}
