@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { SIDEBAR_ITEMS } from "@/utils/constants";
-import { ChevronLeft, Wallet } from "lucide-react";
+import { ChevronLeft, LogOut, Wallet } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
+import LogoutConfirmationDialog from "@/components/common/logout-confirmation-dialog";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
@@ -22,7 +23,7 @@ const Sidebar = () => {
         isCollapsed ? "w-[90px]" : "w-[250px]"
       )}
     >
-      <div className="flex h-[60px] items-center gap-2 border-b px-4">
+      <div className="flex h-[60px] items-center justify-between border-b px-4">
         {/* logo */}
         <div className="flex items-center gap-2 overflow-hidden">
           <Wallet className="h-6 w-6 flex-shrink-0 text-primary" />
@@ -60,7 +61,7 @@ const Sidebar = () => {
               variant="ghost"
               className={cn(
                 "h-12 w-full justify-start text-base",
-                pathname === item.href && "bg-gray-200"
+                pathname === item.href && "bg-accent text-accent-foreground"
               )}
             >
               <item.icon className="h-6 w-6 flex-shrink-0" />
@@ -81,30 +82,32 @@ const Sidebar = () => {
         {/* </div> */}
       </ScrollArea>
 
-      {/* <div className="border-t p-4">
-        <Button
-          className={cn(
-            "h-10 w-full",
-            "transition-[transform,opacity] duration-200",
-            "whitespace-nowrap",
-            isCollapsed ? "px-0 translate-x-12 transform opacity-0" : "justify-start px-4"
-          )}
-        >
-          <Plus className="h-4 w-4 flex-shrink-0" />
-          <span
-            className={cn(
-              "transition-[transform,opacity] duration-200",
-              "absolute left-[36px] whitespace-nowrap",
-              isCollapsed
-                ? "translate-x-12 transform opacity-0"
-                : "translate-x-0 transform opacity-100"
-            )}
-          >
-            New Invoice
-          </span>
-          <LogoutButton />
-        </Button>
-      </div> */}
+      <div className="border-t p-4">
+        <LogoutConfirmationDialog
+          trigger={
+            <Button
+              variant="ghost"
+              className={cn(
+                "h-12 w-full justify-start text-base",
+                "transition-[transform,opacity] duration-200"
+              )}
+            >
+              <LogOut className="h-6 w-6 flex-shrink-0 text-red-500" />
+              <span
+                className={cn(
+                  "transition-[transform,opacity] duration-200",
+                  "whitespace-nowrap pl-3 text-red-500",
+                  isCollapsed
+                    ? "translate-x-12 transform opacity-0"
+                    : "translate-x-0 transform opacity-100"
+                )}
+              >
+                Logout
+              </span>
+            </Button>
+          }
+        />
+      </div>
     </div>
   );
 };
