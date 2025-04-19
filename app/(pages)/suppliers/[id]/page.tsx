@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -19,14 +18,29 @@ import {
   DollarSign,
 } from "lucide-react";
 
-export default function SupplierDetailPage({
+export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  return {
+    title: `Supplier: ${id} | quikBills Invoicing`,
+    description: `Details for supplier ${id}`,
+  };
+}
+
+export default async function SupplierDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
 }) {
+
+  const { id } = await params;
+
   // TODO: Fetch actual supplier data
   const supplier = {
-    id: params.id,
+    id,
     name: "Tech Solutions Inc",
     email: "contact@techsolutions.com",
     phone: "+1 234-567-8900",
@@ -123,7 +137,9 @@ export default function SupplierDetailPage({
                   <TableCell>${order.amount}</TableCell>
                   <TableCell>
                     <Badge
-                      variant={order.status === "delivered" ? "default" : "destructive"}
+                      variant={
+                        order.status === "delivered" ? "default" : "destructive"
+                      }
                     >
                       {order.status}
                     </Badge>
