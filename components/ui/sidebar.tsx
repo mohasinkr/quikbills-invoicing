@@ -53,33 +53,33 @@ const Sidebar = () => {
         </Button>
       </div>
 
-      <ScrollArea className="flex-1 space-y-2 px-3">
-        {/* <div className="space-y-2 py-4"> */}
-        {SIDEBAR_ITEMS.map((item) => (
-          <Link href={item.href} key={item.href}>
-            <Button
-              variant="ghost"
-              className={cn(
-                "h-12 w-full justify-start text-base",
-                pathname === item.href && "bg-accent text-accent-foreground"
-              )}
-            >
-              <item.icon className="h-6 w-6 flex-shrink-0" />
-              <span
+      <ScrollArea className="flex-1 px-3 py-2">
+        <div className="flex flex-col space-y-2">
+          {SIDEBAR_ITEMS.map((item) => (
+            <Link href={item.href} key={item.href} className="w-full">
+              <Button
+                variant="ghost"
                 className={cn(
-                  "transition-[transform,opacity] duration-200",
-                  "whitespace-nowrap pl-3",
-                  isCollapsed
-                    ? "translate-x-12 transform opacity-0"
-                    : "translate-x-0 transform opacity-100"
+                  "h-12 w-full justify-start rounded-md text-base",
+                  pathname === item.href && "bg-accent text-accent-foreground"
                 )}
               >
-                {item.label}
-              </span>
-            </Button>
-          </Link>
-        ))}
-        {/* </div> */}
+                <item.icon className="h-6 w-6 flex-shrink-0" />
+                <span
+                  className={cn(
+                    "transition-[transform,opacity] duration-200",
+                    "whitespace-nowrap pl-3",
+                    isCollapsed
+                      ? "translate-x-12 transform opacity-0"
+                      : "translate-x-0 transform opacity-100"
+                  )}
+                >
+                  {item.label}
+                </span>
+              </Button>
+            </Link>
+          ))}
+        </div>
       </ScrollArea>
 
       <div className="border-t p-4">
@@ -88,7 +88,7 @@ const Sidebar = () => {
             <Button
               variant="ghost"
               className={cn(
-                "h-12 w-full justify-start text-base",
+                "h-12 w-full justify-start rounded-md text-base",
                 "transition-[transform,opacity] duration-200"
               )}
             >
