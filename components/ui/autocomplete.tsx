@@ -128,6 +128,7 @@ export const AutoComplete = ({
 
   const handleInputChange = (value: string, field: any) => {
     setInputDisplay(value);
+    if (value.length > 0) setOpen(true);
   };
 
   return (
@@ -150,7 +151,8 @@ export const AutoComplete = ({
                     isLoading ? undefined : handleInputChange(value, field)
                   }
                   onBlur={handleBlur}
-                  onFocus={() => setOpen(true)}
+                  onFocus={() => {}}
+                  onClick={() => setOpen(true)}
                   placeholder={placeholder}
                   disabled={disabled}
                   className="text-base"
@@ -158,8 +160,8 @@ export const AutoComplete = ({
               </div>
               <div className="relative mt-1">
                 {isOpen && (
-                  <div className="absolute top-0 z-10 w-full rounded-xl bg-white outline-none animate-in fade-in-0 zoom-in-95">
-                    <CommandList className="rounded-lg ring-1 ring-slate-200">
+                  <div className="absolute top-0 z-10 w-full rounded-xl bg-popover outline-none animate-in fade-in-0 zoom-in-95">
+                    <CommandList className="rounded-lg ring-1 ring-border">
                       {isLoading ? (
                         <CommandPrimitive.Loading>
                           <div className="p-1">
@@ -198,7 +200,7 @@ export const AutoComplete = ({
                             })}
                         </ScrollArea>
                         {!isLoading && inputDisplay && !hasExactMatch && (
-                          <CommandItem className="pl-8">
+                          <CommandItem className="cursor-pointer py-3 pl-8">
                             Add {inputDisplay}?
                           </CommandItem>
                         )}
