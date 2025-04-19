@@ -1,4 +1,5 @@
 import Sidebar from "@/components/ui/sidebar";
+import { FloatingThemeToggle } from "@/components/theme/floating-theme-toggle";
 
 export default function PagesLayout({
   children,
@@ -7,9 +8,14 @@ export default function PagesLayout({
 }) {
   return (
     <section className="flex h-screen overflow-hidden">
-      {/* <DashboardSidebar /> */}
       <Sidebar />
-      <div className="flex-1 overflow-y-auto bg-white p-8">{children}</div>
+      <div className="relative flex-1 overflow-y-auto bg-background p-8">
+        {/* Floating theme toggle */}
+        <FloatingThemeToggle />
+
+        {/* Page content */}
+        {children}
+      </div>
     </section>
   );
 }

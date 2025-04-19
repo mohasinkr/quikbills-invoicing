@@ -14,8 +14,9 @@ import InvoiceActions from "./invoice-actions";
 import { Badge } from "@/components/ui/badge";
 import { useOptimistic } from "react";
 import { cn } from "@/lib/utils";
+import { moneyFormatter } from "@/utils/format-money";
 
-type OptimisticAction = {
+export type OptimisticAction = {
   type: "DELETE" | "UPDATE";
   id: number;
   status?: string;
@@ -74,7 +75,9 @@ const InvoiceTable = ({ invoices, customerNames }: InvoiceTableProps) => {
             <TableCell>{invoice.customers.name}</TableCell>
             <TableCell>{invoice.description}</TableCell>
             <TableCell>{invoice.due_date}</TableCell>
-            <TableCell>₹{invoice.total || 0}</TableCell>
+            <TableCell>
+              {moneyFormatter(parseFloat(invoice.total.toFixed(2))) || 0}
+            </TableCell>
             <TableCell>
               <InvoiceStatusBadge status={invoice.status} />
             </TableCell>

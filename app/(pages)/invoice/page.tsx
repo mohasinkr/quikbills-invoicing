@@ -1,6 +1,5 @@
-import InvoiceHeader from "@/features/invoices/components/invoice-header";
-import InvoiceListing from "@/features/invoices/components/invoice-listing";
-
+import InvoiceHeader from "@/components/invoice/invoice-header";
+import InvoiceListing from "@/components/invoice/invoice-listing";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 

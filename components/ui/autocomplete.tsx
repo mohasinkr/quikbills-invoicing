@@ -24,6 +24,7 @@ import {
   CommandList,
 } from "./command";
 import { Skeleton } from "./skeleton";
+import { ScrollArea } from "./scroll-area";
 
 type Option = {
   name: string;
@@ -167,31 +168,35 @@ export const AutoComplete = ({
                         </CommandPrimitive.Loading>
                       ) : null}
                       <CommandGroup>
-                        {filteredOptions.length > 0 &&
-                          !isLoading &&
-                          filteredOptions.map((option) => {
-                            const isSelected = field.value === option.value;
-                            return (
-                              <CommandItem
-                                key={option.value}
-                                value={option.value}
-                                onMouseDown={(event) => {
-                                  event.preventDefault();
-                                  event.stopPropagation();
-                                }}
-                                onSelect={() =>
-                                  handleSelectOption(option.value, field)
-                                }
-                                className={cn(
-                                  "flex w-full items-center gap-2",
-                                  !isSelected ? "pl-8" : null
-                                )}
-                              >
-                                {isSelected ? <Check className="w-4" /> : null}
-                                {option.name}
-                              </CommandItem>
-                            );
-                          })}
+                        <ScrollArea className="h-40">
+                          {filteredOptions.length > 0 &&
+                            !isLoading &&
+                            filteredOptions.map((option) => {
+                              const isSelected = field.value === option.value;
+                              return (
+                                <CommandItem
+                                  key={option.value}
+                                  value={option.value}
+                                  onMouseDown={(event) => {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                  }}
+                                  onSelect={() =>
+                                    handleSelectOption(option.value, field)
+                                  }
+                                  className={cn(
+                                    "flex w-full items-center gap-2",
+                                    !isSelected ? "pl-8" : null
+                                  )}
+                                >
+                                  {isSelected ? (
+                                    <Check className="w-4" />
+                                  ) : null}
+                                  {option.name}
+                                </CommandItem>
+                              );
+                            })}
+                        </ScrollArea>
                         {!isLoading && inputDisplay && !hasExactMatch && (
                           <CommandItem className="pl-8">
                             Add {inputDisplay}?

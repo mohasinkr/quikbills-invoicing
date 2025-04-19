@@ -3,15 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
-import { UserAuthForm } from "@/features/auth/components/user-auth-form";
+import { UserAuthForm } from "@/components/auth/user-auth-form";
 import { buttonVariants } from "@/components/ui/button";
 
 import authImage from "/public/images/auth-left.png";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Authentication",
-  description: "Authentication forms built using the components.",
+  title: "Sign up for quikBills Invoicing",
+  description: "Create your account for quikBills Invoicing platform.",
 };
 
 export default function SignUpPage() {

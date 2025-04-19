@@ -1,5 +1,5 @@
-import CreateCustomerDialog from "@/features/customers/components/create-customer-dialog";
-import CustomerTable from "@/features/customers/components/customer-table";
+import CreateCustomerDialog from "@/components/customer/create-customer-dialog";
+import CustomerTable from "@/components/customer/customer-table";
 
 const CustomersPage = () => {
   return (

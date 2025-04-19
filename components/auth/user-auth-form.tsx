@@ -4,15 +4,15 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signup } from "../actions/signup";
-import { login } from "../actions/login";
-import { handleAuthProvider } from "../actions/login-provider";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import FormSubmitButton from "@/components/common/form-submit-button";
 import { useTransition } from "react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { useSearchParams } from "next/navigation";
+import { login } from "@/actions/auth/login";
+import { signup } from "@/actions/auth/signup";
+import { handleAuthProvider } from "@/actions/auth/login-provider";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
   context?: "login" | "signup";
@@ -57,7 +57,9 @@ export function UserAuthForm({
             autoCapitalize="none"
             autoComplete="email"
             autoCorrect="off"
-            defaultValue={bypassAuth ? process.env.NEXT_PUBLIC_DEFAULT_EMAIL : ""}
+            defaultValue={
+              bypassAuth ? process.env.NEXT_PUBLIC_DEFAULT_EMAIL : ""
+            }
             required
           />
         </div>
@@ -71,7 +73,9 @@ export function UserAuthForm({
             placeholder="******"
             type="password"
             autoCapitalize="none"
-            defaultValue={bypassAuth ? process.env.NEXT_PUBLIC_DEFAULT_PASSWORD : ""}
+            defaultValue={
+              bypassAuth ? process.env.NEXT_PUBLIC_DEFAULT_PASSWORD : ""
+            }
             required
           />
         </div>

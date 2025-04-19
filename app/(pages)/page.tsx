@@ -1,6 +1,6 @@
-import { InvoiceChart } from "@/features/dashboard/components/invoice-chart";
-import { MetricCard } from "@/features/dashboard/components/metric-card";
-import { RecentInvoices } from "@/features/dashboard/components/recent-invoices";
+import { InvoiceChart } from "@/components/dashboard/invoice-chart";
+import { MetricCard } from "@/components/dashboard/metric-card";
+import { RecentInvoices } from "@/components/dashboard/recent-invoices";
 import { DollarSign, Users, FileText } from "lucide-react";
 
 // This would typically come from an API or database
