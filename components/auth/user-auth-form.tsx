@@ -31,7 +31,9 @@ export function UserAuthForm({
   async function onSubmit(data: FormData) {
     if (context === "login") {
       const { errorMessage } = await login(data);
-      if (errorMessage) toast.error(errorMessage);
+      if (errorMessage === "invalid_credentials")
+        toast.error("Invalid Credentials");
+      else toast.error(errorMessage);
     } else {
       const signupData = await signup(data);
       if (signupData?.user)
