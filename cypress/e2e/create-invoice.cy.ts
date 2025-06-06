@@ -4,7 +4,7 @@ describe("Create Invoice flow", () => {
   });
   it("display the invoice listing page", () => {
     cy.visit("/invoice");
-    cy.get("button").contains("Create New Invoice").click();
+    cy.get("button").contains("Create Invoice").click();
 
     cy.get("div[role=dialog]")
       .should("be.visible")

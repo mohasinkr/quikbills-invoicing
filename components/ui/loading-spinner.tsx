@@ -12,7 +12,7 @@ const LoadingSpinner = ({
 }) => {
   return (
     <div className={cn("inline-flex items-center gap-x-2", parentClassName)}>
-      <span>{label || ""}</span>
+      <span data-cy="loading-text">{label || ""}</span>
       <LoaderCircle
         className={cn("h-8 w-8 animate-spin text-white", spinnerClassName)}
       />

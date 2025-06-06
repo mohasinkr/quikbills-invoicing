@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { UserAuthForm } from "@/components/auth/user-auth-form";
 import { buttonVariants } from "@/components/ui/button";
 
-import authImage from "/public/images/auth-left.png";
+import authImage from "@/public/images/auth-left.png";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
