@@ -73,7 +73,9 @@ const SupplierTable = async () => {
               <TableCell>{supplier.phone}</TableCell>
               <TableCell>
                 <Badge
-                  variant={supplier.status === "active" ? "default" : "secondary"}
+                  variant={
+                    supplier.status === "active" ? "default" : "secondary"
+                  }
                 >
                   {supplier.status}
                 </Badge>

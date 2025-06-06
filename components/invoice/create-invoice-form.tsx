@@ -118,20 +118,20 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Quantity</FormLabel>
-                <FormControl>
+              <FormControl>
                 <Input
                   type="number"
                   placeholder="Enter quantity"
                   {...field}
                   onChange={(e) => {
-                  const quantity = Number(e.target.value);
-                  const unitPrice = form.getValues("unit_price");
-                  const total = parseFloat((quantity * unitPrice).toFixed(2));
-                  form.setValue("total", total);
-                  field.onChange(e);
+                    const quantity = Number(e.target.value);
+                    const unitPrice = form.getValues("unit_price");
+                    const total = parseFloat((quantity * unitPrice).toFixed(2));
+                    form.setValue("total", total);
+                    field.onChange(e);
                   }}
                 />
-                </FormControl>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

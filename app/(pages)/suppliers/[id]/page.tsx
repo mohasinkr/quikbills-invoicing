@@ -35,7 +35,6 @@ export default async function SupplierDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-
   const { id } = await params;
 
   // TODO: Fetch actual supplier data

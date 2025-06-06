@@ -1,4 +1,3 @@
-
 const InvoiceHeader = () => {
   return (
     <header className="mb-8">
