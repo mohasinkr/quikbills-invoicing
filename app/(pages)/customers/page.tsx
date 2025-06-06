@@ -1,5 +1,5 @@
 import CreateCustomerDialog from "@/components/customer/create-customer-dialog";
-import CustomerTable from "@/components/customer/customer-table";
+import CustomerListing from "@/components/customer/customer-listing";
 
 const CustomersPage = () => {
   return (
@@ -9,7 +9,7 @@ const CustomersPage = () => {
         <CreateCustomerDialog />
       </div>
       {/* <CustomerSearchBar /> */}
-      <CustomerTable />
+      <CustomerListing />
     </section>
   );
 };

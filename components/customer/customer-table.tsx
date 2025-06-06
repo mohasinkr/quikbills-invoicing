@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -5,12 +7,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { fetchCustomers } from "@/lib/db/customers/get-customers";
 import CustomerTableRow from "./customer-table-row";
+import { Customer } from "@/schema/types";
 
-export const CustomerTable = async () => {
-  const customers = await fetchCustomers();
-
+export const CustomerTable = ({ customers }: { customers: Customer[] }) => {
   const handleDeleteCustomer = (id: string) => {};
 
   return (
