@@ -168,7 +168,7 @@ export const AutoComplete = ({
                         </CommandPrimitive.Loading>
                       ) : null}
                       <CommandGroup>
-                        <ScrollArea className="h-40">
+                        <ScrollArea className="h-auto max-h-40">
                           {filteredOptions.length > 0 &&
                             !isLoading &&
                             filteredOptions.map((option) => {
@@ -196,12 +196,12 @@ export const AutoComplete = ({
                                 </CommandItem>
                               );
                             })}
+                          {!isLoading && inputDisplay && !hasExactMatch && (
+                            <CommandItem className="pl-8">
+                              Add {inputDisplay}?
+                            </CommandItem>
+                          )}
                         </ScrollArea>
-                        {!isLoading && inputDisplay && !hasExactMatch && (
-                          <CommandItem className="pl-8">
-                            Add {inputDisplay}?
-                          </CommandItem>
-                        )}
                       </CommandGroup>
                     </CommandList>
                   </div>
