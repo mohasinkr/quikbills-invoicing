@@ -24,9 +24,9 @@ import { SUCCESS_MESSAGES } from "@/utils/constants";
 import createCustomer from "@/actions/customer/create-customer";
 
 const schema = z.object({
-  name: z.string(),
+  name: z.string().min(1, "Required"),
   email: z.string(),
-  phone: z.string(),
+  phone: z.string().min(10, "Required"),
   sex: z.enum(["male", "female", "other"]),
   address: z.string(),
   status: z.enum(["active", "inactive"]),
