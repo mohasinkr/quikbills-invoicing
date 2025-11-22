@@ -27,13 +27,14 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const schema = z.object({
-  unit_price: z.coerce.number().min(0.0, "Amount is required"),
-  description: z.string().min(1, "Item description is required"),
-  quantity: z.coerce.number().min(1, "At least one item is required"),
-  total: z.coerce.number().min(0.0, "Total amount is required"),
+  unit_price: z.coerce.number().min(0.0, "Required"),
+  description: z.string().min(1, "Required"),
+  quantity: z.coerce.number().min(1, "Required"),
+  total: z.coerce.number().min(0.0, "Required"),
   due_date: z.string(),
   status: z.enum(["paid", "unpaid", "overdue"]),
   customer_id: z.string().min(1, "Required"),
+  phone_number: z.string().min(10, "Required"),
 });
 
 type InvoiceFormProps = {
@@ -41,9 +42,19 @@ type InvoiceFormProps = {
   setOpen?: (open: boolean) => React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+const samplePhone = [
+  {
+    name: "1234567890",
+    value: "1234567890",
+  },
+  {
+    name: "0987654321",
+    value: "0987654321",
+  },
+];
+
 const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -54,12 +65,16 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
       due_date: new Date().toISOString(),
       status: "unpaid",
       customer_id: "",
+      phone_number: "",
     },
     mode: "onSubmit",
   });
 
+  const phone = form.watch("phone_number");
+
   async function onSubmit(values: z.infer<typeof schema>) {
     console.table(values);
+    const { phone_number, ...rest } = values;
     setIsSubmitting(true);
     try {
       console.table(values);
@@ -79,6 +94,33 @@ const CreateInvoiceForm = ({ customerNames, setOpen }: InvoiceFormProps) => {
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <div>
+          {/* <FormField
+            control={form.control}
+            name="phone_number"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone Number</FormLabel>
+                <FormControl>
+                  <Input
+                    className="resize-none"
+                    placeholder="Enter phone number"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          /> */}
+          <Label htmlFor="customer_name">Phone Number</Label>
+          <AutoComplete
+            name="phone_number"
+            form={form}
+            hideIcon
+            options={samplePhone}
+            // emptyMessage="Add kevin?"
+          />
+        </div>
         <div>
           <Label htmlFor="customer_name">Customer Name</Label>
           <AutoComplete

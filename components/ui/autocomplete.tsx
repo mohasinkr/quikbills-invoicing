@@ -25,6 +25,7 @@ import {
 } from "./command";
 import { Skeleton } from "./skeleton";
 import { ScrollArea } from "./scroll-area";
+import { useDebouncedCallback } from "use-debounce";
 
 type Option = {
   name: string;
@@ -58,6 +59,11 @@ export const AutoComplete = ({
     const currentValue = form.getValues()[name];
     return options.find((opt) => opt.value === currentValue)?.name || "";
   });
+
+  const debounced = useDebouncedCallback(
+    (value) => (isLoading ? undefined : handleInputChange(value)),
+    300
+  );
 
   // Filter options based on input
   const filteredOptions = useMemo(() => {
@@ -126,7 +132,7 @@ export const AutoComplete = ({
     [options]
   );
 
-  const handleInputChange = (value: string, field: any) => {
+  const handleInputChange = (value: string, field?: any) => {
     setInputDisplay(value);
   };
 
@@ -145,16 +151,15 @@ export const AutoComplete = ({
                 <CommandInput
                   hideIcon={hideIcon}
                   ref={inputRef}
-                  value={inputDisplay}
-                  onValueChange={(value) =>
-                    isLoading ? undefined : handleInputChange(value, field)
-                  }
+                  // value={inputDisplay}
+                  onValueChange={debounced}
                   onBlur={handleBlur}
                   onFocus={() => setOpen(true)}
                   placeholder={placeholder}
                   disabled={disabled}
                   className="text-base"
                 />
+                <p>debouncing :{inputDisplay}</p>
               </div>
               <div className="relative mt-1">
                 {isOpen && (
