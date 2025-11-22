@@ -2,7 +2,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useTheme } from "next-themes";
 
 const SettingsPage = () => {
@@ -134,7 +140,9 @@ const SettingsPage = () => {
               />
             </div>
             <div className="flex items-center justify-between">
-              <Label htmlFor="payment-confirmations">Payment Confirmations</Label>
+              <Label htmlFor="payment-confirmations">
+                Payment Confirmations
+              </Label>
               <input
                 id="payment-confirmations"
                 type="checkbox"
