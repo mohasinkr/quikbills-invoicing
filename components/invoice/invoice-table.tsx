@@ -71,7 +71,7 @@ const InvoiceTable = ({ invoices, customerNames }: InvoiceTableProps) => {
               invoice.actionStatus === "deleting" && "bg-muted opacity-50"
             )}
           >
-            <TableCell>{invoice.id}</TableCell>
+            <TableCell>INV-{invoice.id}</TableCell>
             <TableCell>{invoice.customers.name}</TableCell>
             <TableCell>{invoice.description}</TableCell>
             <TableCell>{invoice.due_date}</TableCell>

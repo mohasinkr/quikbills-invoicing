@@ -1,7 +1,7 @@
 import { fetchCustomers } from "@/lib/db/customers/get-customers";
 import { fetchInvoices } from "@/lib/db/invoices/get-invoices";
+import InvoiceDownload from "../pdf/invoice/download-invoice";
 import CreateInvoiceDialog from "./create-invoice-dialog";
-import DownloadInvoice from "./download-as-pdf";
 import InvoiceTable from "./invoice-table";
 
 export default async function InvoiceListing() {
@@ -15,11 +15,13 @@ export default async function InvoiceListing() {
     return <div>No invoices found</div>;
   }
 
+  console.log(invoices, "invoices");
+
   return (
     <>
       <section className="mb-5 flex gap-x-4">
         <CreateInvoiceDialog customerNames={customerNames} />
-        <DownloadInvoice />
+        <InvoiceDownload invoices={invoices} />
       </section>
       <InvoiceTable invoices={invoices} customerNames={customerNames} />
     </>
