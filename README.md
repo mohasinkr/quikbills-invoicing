@@ -38,7 +38,7 @@ QuikBills is a modern, user-friendly invoicing system built with Next.js and Sup
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/quikbills-invoicing.git
+   git clone https://github.com/mohasinkr/quikbills-invoicing.git
    cd quikbills-invoicing
    ```
 
