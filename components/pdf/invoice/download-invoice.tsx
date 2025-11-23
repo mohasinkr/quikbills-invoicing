@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { InvoiceWithCustomer } from "@/schema/types";
 import { pdf } from "@react-pdf/renderer";
 import { Download } from "lucide-react";
-import InvoicePDF from "./invoice-pdf";
-import { InvoiceWithCustomer } from "@/schema/types";
+import { useState } from "react";
+import InvoiceListPDF from "./invoice-list-pdf";
 
 export default function InvoiceDownload({
   invoices,
 }: {
-  invoices: InvoiceWithCustomer[] | null;
+  invoices: InvoiceWithCustomer[];
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -25,8 +25,8 @@ export default function InvoiceDownload({
       }));
 
       const blob = await pdf(
-        <InvoicePDF
-          invoiceNo=""
+        <InvoiceListPDF
+          invoiceNo={`INV-${invoices}`}
           date="03/07/2023"
           dueDate="31/07/2023"
           issuedTo={{
@@ -34,7 +34,7 @@ export default function InvoiceDownload({
             address: "102, San-Fransico, CA, USA",
             email: "info@laravel.com",
           }}
-          items={sampleItems}
+          items={invoices}
           subtotal={10500}
           tax={1050}
           discount={10}

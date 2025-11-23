@@ -10,5 +10,9 @@ export const fetchInvoices = async () => {
     .order("id")
     .returns<InvoiceWithCustomer[]>();
 
-  return data;
+  if (data) {
+    return data;
+  }
+
+  return [];
 };

@@ -1,3 +1,4 @@
+import { InvoiceWithCustomer } from "@/schema/types";
 import {
   Page,
   Text,
@@ -68,11 +69,6 @@ const styles = StyleSheet.create({
 // ----------------------
 // MAIN PDF COMPONENT
 // ----------------------
-interface Item {
-  description: string;
-  quantity: number;
-  price: number;
-}
 
 interface InvoicePDFProps {
   invoiceNo: string;
@@ -83,14 +79,14 @@ interface InvoicePDFProps {
     address?: string;
     email?: string;
   };
-  items: Item[];
+  items: InvoiceWithCustomer[];
   subtotal: number;
   tax: number;
   discount: number;
   total: number;
 }
 
-export default function InvoicePDF(props: InvoicePDFProps) {
+export default function InvoiceListPDF(props: InvoicePDFProps) {
   const {
     invoiceNo,
     date,
@@ -114,6 +110,10 @@ export default function InvoicePDF(props: InvoicePDFProps) {
           />
 
           <View>
+            <Text>Invoice Listing</Text>
+          </View>
+
+          <View>
             <Text>Tailwind Inc.</Text>
             <Text>sales@tailwindcss.com</Text>
             <Text>+41-442341232</Text>
@@ -122,7 +122,7 @@ export default function InvoicePDF(props: InvoicePDFProps) {
         </View>
 
         {/* Bill To */}
-        <View style={[styles.section, styles.row]}>
+        {/* <View style={[styles.section, styles.row]}>
           <View>
             <Text style={styles.heading}>Bill To</Text>
             <Text>{issuedTo.name}</Text>
@@ -135,31 +135,41 @@ export default function InvoicePDF(props: InvoicePDFProps) {
             <Text>Date: {date}</Text>
             <Text>Due: {dueDate}</Text>
           </View>
-        </View>
+        </View> */}
 
         {/* Items Table */}
         <View style={styles.table}>
           {/* Header */}
           <View style={[styles.row, styles.tableHeader]}>
-            <Text style={styles.cellItem}>Item</Text>
+            <Text style={styles.cellItem}>Customer Name</Text>
+            <Text style={styles.cellItem}>Description</Text>
             <Text style={styles.cellQty}>Qty</Text>
             <Text style={styles.cellPrice}>Price</Text>
             <Text style={styles.cellAmount}>Amount</Text>
           </View>
 
-          {/* Items */}
-          {items.map((item, i) => (
-            <View key={i} style={[styles.row, styles.tableRow]}>
-              <View style={styles.cellItem}>
-                <Text>{item.description}</Text>
+          {/* Map backend items directly */}
+          {items.map((item, i) => {
+            const price = item.unit_price; // backend → PDF
+            const qty = item.quantity;
+            const amount = qty * price;
+
+            return (
+              <View key={i} style={[styles.row, styles.tableRow]}>
+                <View style={styles.cellItem}>
+                  <Text>{item.customers.name}</Text>
+                </View>
+
+                <View style={styles.cellItem}>
+                  <Text>{item.description}</Text>
+                </View>
+
+                <Text style={styles.cellQty}>{qty}</Text>
+                <Text style={styles.cellPrice}>${price.toFixed(2)}</Text>
+                <Text style={styles.cellAmount}>${amount.toFixed(2)}</Text>
               </View>
-              <Text style={styles.cellQty}>{item.quantity}</Text>
-              <Text style={styles.cellPrice}>${item.price.toFixed(2)}</Text>
-              <Text style={styles.cellAmount}>
-                ${(item.quantity * item.price).toFixed(2)}
-              </Text>
-            </View>
-          ))}
+            );
+          })}
         </View>
 
         {/* Totals */}
@@ -175,10 +185,10 @@ export default function InvoicePDF(props: InvoicePDFProps) {
         </View>
 
         {/* Footer */}
-        <Text style={styles.footer}>
+        {/* <Text style={styles.footer}>
           Please pay before the due date. You can pay by logging into your
           client portal.
-        </Text>
+        </Text> */}
       </Page>
     </Document>
   );
