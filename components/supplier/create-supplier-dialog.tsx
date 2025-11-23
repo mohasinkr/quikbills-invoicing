@@ -46,7 +46,6 @@ const CreateSupplierDialog = () => {
   const onSubmit = async (values: z.infer<typeof supplierSchema>) => {
     try {
       // TODO: Implement actual supplier creation
-      console.log(values);
       toast.success("Supplier created successfully");
     } catch (error) {
       toast.error("Failed to create supplier");

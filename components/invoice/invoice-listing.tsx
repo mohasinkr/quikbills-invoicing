@@ -1,8 +1,10 @@
 import { fetchCustomers } from "@/lib/db/customers/get-customers";
 import { fetchInvoices } from "@/lib/db/invoices/get-invoices";
+import ButtonWithIcon from "@/components/ui/button-with-icon";
 import InvoiceDownload from "../pdf/invoice/download-invoice";
-import CreateInvoiceDialog from "./create-invoice-dialog";
 import InvoiceTable from "./invoice-table";
+import { PlusIcon } from "lucide-react";
+import Link from "next/link";
 
 export default async function InvoiceListing() {
   // mapping the customer names to an array
@@ -15,12 +17,12 @@ export default async function InvoiceListing() {
     return <div>No invoices found</div>;
   }
 
-  console.log(invoices, "invoices");
-
   return (
     <>
       <section className="mb-5 flex gap-x-4">
-        <CreateInvoiceDialog customerNames={customerNames} />
+        <Link href="/invoice/create">
+          <ButtonWithIcon icon={PlusIcon}>Create Invoice</ButtonWithIcon>
+        </Link>
         <InvoiceDownload invoices={invoices} />
       </section>
       <InvoiceTable invoices={invoices} customerNames={customerNames} />
