@@ -8,4 +8,7 @@ export interface InvoiceWithCustomer extends Invoice {
   customers: Tables<"customers">;
 }
 
-export type TCustomerNames = Array<{ name: string; value: string }>;
+export type TCustomerNames = {
+  name: string;
+  value: string;
+}[];

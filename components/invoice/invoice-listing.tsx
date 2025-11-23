@@ -6,9 +6,9 @@ import InvoiceTable from "./invoice-table";
 
 export default async function InvoiceListing() {
   // mapping the customer names to an array
-  const customerNames = (await fetchCustomers(["name", "customer_id"])).map(
-    (customer) => ({ name: customer.name, value: customer.customer_id })
-  );
+  const customerNames = (await fetchCustomers(["name", "customer_id"]))
+    .filter((customer) => customer.name !== null)
+    .map((customer) => ({ name: customer.name!, value: customer.customer_id }));
 
   const invoices = await fetchInvoices();
   if (!invoices) {

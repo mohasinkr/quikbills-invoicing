@@ -13,6 +13,9 @@ cypress.env.json
 # repomix output
 repomix-output.txt
 
+# supabase 
+supabase/.temp/**
+
 # idea
 .idea
 
