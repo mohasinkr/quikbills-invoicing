@@ -1,4 +1,4 @@
-import CreateInvoicePageForm from "@/components/invoice/create-invoice-page-form";
+import CreateInvoicePageForm from "@/components/invoice/create-invoice/create-invoice-form";
 import { fetchCustomers } from "@/lib/db/customers/get-customers";
 import type { Metadata } from "next";
 

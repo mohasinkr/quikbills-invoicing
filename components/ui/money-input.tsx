@@ -48,7 +48,7 @@ export default function MoneyInput(props: TextInputProps) {
       name={props.name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{props.label}</FormLabel>
+          {/* <FormLabel>{props.label}</FormLabel> */}
           <FormControl>
             <Input
               placeholder={props.placeholder || "₹0.00"}
