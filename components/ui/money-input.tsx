@@ -17,6 +17,7 @@ type TextInputProps = {
   name: string;
   label: string;
   placeholder?: string;
+  className?: string;
 };
 
 export default function MoneyInput(props: TextInputProps) {
@@ -53,7 +54,9 @@ export default function MoneyInput(props: TextInputProps) {
             <Input
               placeholder={props.placeholder || "₹0.00"}
               type="text"
-              {...field}
+              className={props.className}
+              name={field.name}
+              ref={field.ref}
               onChange={(ev) => handleChange(field.onChange, ev.target.value)}
               value={displayValue}
               inputMode="numeric"

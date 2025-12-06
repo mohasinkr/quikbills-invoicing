@@ -15,6 +15,7 @@ import {
 import FormSelect from "@/components/ui/form-select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import CurrencyDisplay from "@/components/ui/currency-display";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import MoneyInput from "@/components/ui/money-input";
 import { SelectItem } from "@/components/ui/select";
@@ -162,11 +163,11 @@ const CreateInvoicePageForm = ({
                 </thead>
                 <tbody className="divide-y">
                   <tr className="hover:bg-muted/50">
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 w-full">
                       <Input
                         placeholder="Item name"
                         value="Sample Item"
-                        className="border-none bg-transparent shadow-none focus:ring-0"
+                        className="border-none bg-transparent shadow-none focus:ring-0 w-full"
                       />
                     </td>
                     <td className="px-4 py-3">
@@ -187,22 +188,18 @@ const CreateInvoicePageForm = ({
                               form.setValue("total", total);
                               field.onChange(e);
                             }}
-                            className="border-none bg-transparent text-center shadow-none focus:ring-0"
+                            className="border-none bg-transparent text-center shadow-none focus:ring-0 w-20"
                           />
                         )}
                       />
                     </td>
                     <td className="px-4 py-3">
-                      <MoneyInput form={form} label="" name="unit_price" />
+                      <MoneyInput form={form} label="" name="unit_price" className="w-32" />
                     </td>
                     <td className="px-4 py-3 text-right font-medium">
-                      <FormField
-                        control={form.control}
-                        name="total"
-                        render={({ field }) => (
-                          <Input type="number" readOnly {...field} />
-                        )}
-                      />
+                      <div className="w-auto max-w-[200px] h-10 border border-input px-3 py-2 text-sm ring-offset-background rounded-md overflow-x-auto whitespace-nowrap text-right">
+                        <CurrencyDisplay value={form.watch("total")} />
+                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -211,7 +208,7 @@ const CreateInvoicePageForm = ({
 
             <div className="mt-4 text-right">
               <div className="text-lg font-semibold">
-                Total: ${form.watch("total").toFixed(2)}
+                Total: <CurrencyDisplay value={form.watch("total")} />
               </div>
             </div>
           </div>
