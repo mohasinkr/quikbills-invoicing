@@ -11,6 +11,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { Check } from "lucide-react";
 import {
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -55,31 +56,40 @@ export const AutoComplete = ({
 }: AutoCompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setOpen] = useState(false);
-  const [inputDisplay, setInputDisplay] = useState(() => {
-    const currentValue = form.getValues()[name];
-    return options.find((opt) => opt.value === currentValue)?.name || "";
-  });
+  const [inputValue, setInputValue] = useState("");
+  const [debouncedInput, setDebouncedInput] = useState("");
 
-  const debounced = useDebouncedCallback(
-    (value) => (isLoading ? undefined : handleInputChange(value)),
-    300
-  );
+  const debouncedSetFilteredInput = useDebouncedCallback((value: string) => {
+    setDebouncedInput(value);
+  }, 300);
+
+  // Sync inputValue with form value
+  useEffect(() => {
+    const subscription = form.watch((value, { name: fieldName }) => {
+      if (fieldName === name) {
+        const selectedOption = options.find((opt) => opt.value === value[name]);
+        setInputValue(selectedOption?.name || "");
+        setDebouncedInput(selectedOption?.name || "");
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form, name, options]);
 
   // Filter options based on input
   const filteredOptions = useMemo(() => {
-    if (!inputDisplay) return options;
+    if (!debouncedInput) return options;
 
     return options.filter((option) =>
-      option.name.toLowerCase().includes(inputDisplay.toLowerCase())
+      option.name.toLowerCase().includes(debouncedInput.toLowerCase())
     );
-  }, [options, inputDisplay]);
+  }, [options, debouncedInput]);
 
   // Check if current input matches any option exactly
   const hasExactMatch = useMemo(() => {
     return options.some(
-      (option) => option.name.toLowerCase() === inputDisplay.toLowerCase()
+      (option) => option.name.toLowerCase() === debouncedInput.toLowerCase()
     );
-  }, [options, inputDisplay]);
+  }, [options, debouncedInput]);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLDivElement>, field: any) => {
@@ -93,17 +103,18 @@ export const AutoComplete = ({
       if (event.key === "Enter") {
         event.preventDefault();
 
-        if (input.value === "") return;
+        if (inputValue === "") return;
 
         const optionToSelect = options.find(
-          (option) => option.name.toLowerCase() === input.value.toLowerCase()
+          (option) => option.name.toLowerCase() === inputValue.toLowerCase()
         );
 
         if (optionToSelect) {
           field.onChange(optionToSelect.value);
-          setInputDisplay(optionToSelect.name);
+          setInputValue(optionToSelect.name);
+          setDebouncedInput(optionToSelect.name);
         } else if (onAddNew) {
-          onAddNew(input.value);
+          onAddNew(inputValue);
         }
       }
 
@@ -111,7 +122,7 @@ export const AutoComplete = ({
         input.blur();
       }
     },
-    [isOpen, options, onAddNew]
+    [isOpen, options, onAddNew, inputValue]
   );
 
   const handleBlur = useCallback(() => {
@@ -123,7 +134,8 @@ export const AutoComplete = ({
       const selectedOption = options.find((opt) => opt.value === selectedValue);
       if (selectedOption) {
         field.onChange(selectedOption.value);
-        setInputDisplay(selectedOption.name);
+        setInputValue(selectedOption.name);
+        setDebouncedInput(selectedOption.name);
       }
       setTimeout(() => {
         inputRef?.current?.blur();
@@ -132,8 +144,9 @@ export const AutoComplete = ({
     [options]
   );
 
-  const handleInputChange = (value: string, field?: any) => {
-    setInputDisplay(value);
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+    debouncedSetFilteredInput(value);
   };
 
   return (
@@ -151,15 +164,14 @@ export const AutoComplete = ({
                 <CommandInput
                   hideIcon={hideIcon}
                   ref={inputRef}
-                  // value={inputDisplay}
-                  onValueChange={debounced}
+                  value={inputValue}
+                  onValueChange={handleInputChange}
                   onBlur={handleBlur}
                   onFocus={() => setOpen(true)}
                   placeholder={placeholder}
                   disabled={disabled}
                   className="text-base"
                 />
-                <p>debouncing :{inputDisplay}</p>
               </div>
               <div className="relative mt-1">
                 {isOpen && (
@@ -201,9 +213,12 @@ export const AutoComplete = ({
                                 </CommandItem>
                               );
                             })}
-                          {!isLoading && inputDisplay && !hasExactMatch && (
-                            <CommandItem className="pl-8">
-                              Add {inputDisplay}?
+                          {!isLoading && inputValue && !hasExactMatch && (
+                            <CommandItem
+                              className="pl-8"
+                              onSelect={() => onAddNew && onAddNew(inputValue)}
+                            >
+                              Add {inputValue}?
                             </CommandItem>
                           )}
                         </ScrollArea>
