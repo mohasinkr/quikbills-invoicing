@@ -18,6 +18,8 @@ type TextInputProps = {
   label: string;
   placeholder?: string;
   className?: string;
+  readOnly?: boolean;
+  onChange?: () => void;
 };
 
 export default function MoneyInput(props: TextInputProps) {
@@ -30,17 +32,20 @@ export default function MoneyInput(props: TextInputProps) {
     formOnChange: (value: number) => void,
     inputValue: string
   ) => {
+    if (props.readOnly) return; // Don't handle changes for read-only inputs
+
     const digits = inputValue.replace(/\D/g, "");
 
     const numericValue = Number(digits) / 100;
 
     const formatted = moneyFormatter(numericValue);
-    props.form.setValue(
-      "total",
-      props.form.getValues("quantity") * numericValue
-    );
     setDisplayValue(formatted);
     formOnChange(numericValue);
+
+    // Call external onChange callback if provided
+    if (props.onChange) {
+      props.onChange();
+    }
   };
 
   return (
@@ -55,6 +60,7 @@ export default function MoneyInput(props: TextInputProps) {
               placeholder={props.placeholder || "₹0.00"}
               type="text"
               className={props.className}
+              readOnly={props.readOnly}
               name={field.name}
               ref={field.ref}
               onChange={(ev) => handleChange(field.onChange, ev.target.value)}
