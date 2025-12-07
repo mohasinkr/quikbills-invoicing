@@ -2,7 +2,7 @@ import ButtonWithIcon from "@/components/ui/button-with-icon";
 import DialogForm from "@/components/ui/dialog-form";
 import { TCustomerNames } from "@/schema/types";
 import { PlusIcon } from "lucide-react";
-import CreateInvoiceForm from "./create-invoice-form";
+import CreateInvoiceForm from "./create-invoice-form-copy";
 
 const CreateInvoiceDialog = ({
   customerNames,

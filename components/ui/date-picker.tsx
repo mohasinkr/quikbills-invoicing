@@ -28,7 +28,7 @@ const DatePicker = ({
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-col">
+        <FormItem className="flex flex-col space-y-4">
           <FormLabel>{label || ""}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
