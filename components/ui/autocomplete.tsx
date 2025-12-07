@@ -134,6 +134,7 @@ export const AutoComplete = ({
 
   const handleInputChange = (value: string, field?: any) => {
     setInputDisplay(value);
+    if (value.length > 0) setOpen(true);
   };
 
   return (
@@ -154,7 +155,8 @@ export const AutoComplete = ({
                   // value={inputDisplay}
                   onValueChange={debounced}
                   onBlur={handleBlur}
-                  onFocus={() => setOpen(true)}
+                  onFocus={() => {}}
+                  onClick={() => setOpen(true)}
                   placeholder={placeholder}
                   disabled={disabled}
                   className="text-base"
