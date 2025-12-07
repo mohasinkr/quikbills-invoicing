@@ -20,6 +20,7 @@ type TextInputProps = {
   className?: string;
   readOnly?: boolean;
   onChange?: () => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 export default function MoneyInput(props: TextInputProps) {
@@ -64,6 +65,7 @@ export default function MoneyInput(props: TextInputProps) {
               name={field.name}
               ref={field.ref}
               onChange={(ev) => handleChange(field.onChange, ev.target.value)}
+              onKeyDown={props.onKeyDown}
               value={displayValue}
               inputMode="numeric"
             />

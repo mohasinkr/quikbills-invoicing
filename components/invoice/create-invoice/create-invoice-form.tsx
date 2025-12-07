@@ -38,7 +38,7 @@ const itemSchema = z.object({
 
 const schema = z.object({
   items: z.array(itemSchema).min(1, "At least one item is required"),
-  description: z.string().min(1, "Required"),
+  description: z.string().optional(),
   due_date: z.string(),
   status: z.enum(["paid", "unpaid", "overdue"]),
   customer_id: z.string().min(1, "Required"),
@@ -94,7 +94,7 @@ const CreateInvoicePageForm = ({
     try {
       // Transform items array to match API expectations
       const transformedData = {
-        description: values.description,
+        description: values.description || "",
         due_date: values.due_date,
         status: values.status,
         customer_id: values.customer_id,
@@ -231,7 +231,13 @@ const CreateInvoicePageForm = ({
                             <Input
                               placeholder="Item name"
                               {...field}
-                              className="border-none bg-transparent shadow-none focus:ring-0 w-full"
+                              className="w-full"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  addItem();
+                                }
+                              }}
                             />
                           )}
                         />
@@ -249,7 +255,13 @@ const CreateInvoicePageForm = ({
                                 field.onChange(e);
                                 calculateItemTotal(index);
                               }}
-                              className="border-none bg-transparent text-center shadow-none focus:ring-0 w-20"
+                              className="text-center w-20"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  addItem();
+                                }
+                              }}
                             />
                           )}
                         />
@@ -261,6 +273,12 @@ const CreateInvoicePageForm = ({
                           name={`items.${index}.unit_price`}
                           className="w-32"
                           onChange={() => calculateItemTotal(index)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              addItem();
+                            }
+                          }}
                         />
                       </td>
                       <td className="px-4 py-3 text-right font-medium">
