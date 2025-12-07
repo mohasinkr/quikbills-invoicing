@@ -10,7 +10,11 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run && cypress run --component",
     "generate-types": "pnpm dlx supabase gen types --lang=typescript --project-id jrwllainxczurxdplyht --schema public > schema/supabaseTypes.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -26,15 +30,19 @@
     "@react-pdf/renderer": "^4.3.1",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.86.2",
+    "@tailwindcss/postcss": "^4.1.17",
     "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.0",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.556.0",
     "next": "16.0.7",
     "next-themes": "^0.4.6",
+    "postgres": "^3.4.7",
     "react": "19.2.1",
     "react-day-picker": "9.12.0",
     "react-dom": "19.2.1",
@@ -53,6 +61,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/parser": "^8.48.1",
     "cypress": "^15.7.1",
+    "drizzle-kit": "^0.31.8",
     "eslint": "^9.39.1",
     "eslint-config-next": "16.0.7",
     "eslint-config-prettier": "^10.1.8",
@@ -60,8 +69,8 @@
     "postcss": "^8.5.6",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "supabase": "^2.65.6",
     "tailwindcss": "^4.1.17",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }
