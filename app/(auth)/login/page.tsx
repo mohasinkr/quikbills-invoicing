@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { UserAuthForm } from "@/components/auth/user-auth-form";
 import { buttonVariants } from "@/components/ui/button";
 
-import authImage from "/public/images/auth-left.png";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -26,7 +25,7 @@ export default function LoginPage() {
       >
         Signup
       </Link>
-      <Image src={authImage} alt="Authentication" className="" />
+      <Image src={"/images/auth-left.png"} alt="Authentication" className="" />
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <h1 className="text-center text-2xl font-semibold tracking-tight">
