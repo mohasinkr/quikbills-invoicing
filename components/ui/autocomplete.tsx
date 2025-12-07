@@ -167,7 +167,8 @@ export const AutoComplete = ({
                   value={inputValue}
                   onValueChange={handleInputChange}
                   onBlur={handleBlur}
-                  onFocus={() => setOpen(true)}
+                  onFocus={() => {}}
+                  onClick={() => setOpen(true)}
                   placeholder={placeholder}
                   disabled={disabled}
                   className="text-base"
