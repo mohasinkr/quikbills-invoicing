@@ -72,7 +72,7 @@ const InvoiceTable = ({ invoices, customerNames }: InvoiceTableProps) => {
             )}
           >
             <TableCell>INV-{invoice.id}</TableCell>
-            <TableCell>{invoice.customers.name}</TableCell>
+            <TableCell>{invoice.customer.name}</TableCell>
             <TableCell>{invoice.description}</TableCell>
             <TableCell>{invoice.due_date}</TableCell>
             <TableCell>

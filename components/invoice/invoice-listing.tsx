@@ -8,11 +8,12 @@ import Link from "next/link";
 
 export default async function InvoiceListing() {
   // mapping the customer names to an array
-  const customerNames = (await fetchCustomers(["name", "customer_id"]))
-    .filter((customer) => customer.name !== null)
-    .map((customer) => ({ name: customer.name!, value: customer.customer_id }));
+  const customerNames = await fetchCustomers();
 
   const invoices = await fetchInvoices();
+
+  console.log("invoices", "invoices");
+
   if (!invoices) {
     return <div>No invoices found</div>;
   }

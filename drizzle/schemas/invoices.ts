@@ -1,4 +1,6 @@
+import { relations } from "drizzle-orm";
 import {
+  serial,
   date,
   index,
   integer,
@@ -16,7 +18,7 @@ export const invoiceStatus = pgEnum("Status", ["paid", "unpaid", "overdue"]);
 export const invoices = pgTable(
   "invoices",
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    id: serial("id").primaryKey(),
     customerId: uuid("customer_id")
       .notNull()
       .references(() => customers.customerId, { onDelete: "cascade" }),
@@ -36,3 +38,10 @@ export const invoices = pgTable(
     ),
   ]
 );
+
+export const invoiceRelations = relations(invoices, ({ one }) => ({
+  customer: one(customers, {
+    fields: [invoices.customerId],
+    references: [customers.customerId],
+  }),
+}));
