@@ -1,4 +1,4 @@
-import { InvoiceWithCustomer } from "@/schema/types";
+import { InvoiceWithCustomer } from "@/types/invoice";
 import {
   Page,
   Text,
@@ -150,14 +150,14 @@ export default function InvoiceListPDF(props: InvoicePDFProps) {
 
           {/* Map backend items directly */}
           {items.map((item, i) => {
-            const price = item.unit_price; // backend → PDF
+            const price = item.unitPrice; // backend → PDF
             const qty = item.quantity;
             const amount = qty * price;
 
             return (
               <View key={i} style={[styles.row, styles.tableRow]}>
                 <View style={styles.cellItem}>
-                  <Text>{item.customers.name}</Text>
+                  <Text>{item.customer.name}</Text>
                 </View>
 
                 <View style={styles.cellItem}>

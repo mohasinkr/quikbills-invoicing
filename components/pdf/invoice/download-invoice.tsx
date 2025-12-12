@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { InvoiceWithCustomer } from "@/schema/types";
+import { InvoiceWithCustomer } from "@/types/invoice";
 import { pdf } from "@react-pdf/renderer";
 import { Download } from "lucide-react";
 import { useState } from "react";

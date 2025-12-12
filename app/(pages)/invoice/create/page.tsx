@@ -1,5 +1,5 @@
 import CreateInvoicePageForm from "@/components/invoice/create-invoice/create-invoice-form";
-import { fetchCustomers } from "@/lib/db/customers/get-customers";
+import { fetchCustomerNames, fetchCustomers } from "@/lib/db/customers/get-customers";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,9 +9,8 @@ export const metadata: Metadata = {
 
 const CreateInvoicePage = async () => {
   // mapping the customer names to an array
-  const customerNames = (await fetchCustomers(["name", "customer_id"]))
-    .filter((customer) => customer.name !== null)
-    .map((customer) => ({ name: customer.name!, value: customer.customer_id }));
+
+  const customerNames = await fetchCustomerNames();
 
   return (
     <div className="container mx-auto py-8">

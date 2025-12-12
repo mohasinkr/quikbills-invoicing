@@ -1,23 +1,23 @@
-import { InvoiceWithCustomer } from "@/schema/types";
+import { InvoiceWithCustomer } from "@/types/invoice";
 
 export function createPdfInvoiceData(invoice: InvoiceWithCustomer) {
-  const subtotal = invoice.quantity * invoice.unit_price;
+  const subtotal = invoice.quantity * invoice.unitPrice;
   const tax = 0; // or dynamic if backend provides
   const discount = 0;
   const total = invoice.total ?? subtotal + tax - discount;
 
   return {
     invoiceNo: `INV-${invoice.id}`,
-    date: invoice.created_at.split("T")[0],
-    dueDate: invoice.due_date,
+    date: invoice.createdAt.toISOString().split("T")[0],
+    dueDate: invoice.dueDate,
     issuedTo: {
-      name: invoice.customers.name,
+      name: invoice.customer.name,
     },
     items: [
       {
         description: invoice.description,
         quantity: invoice.quantity,
-        price: invoice.unit_price,
+        price: invoice.unitPrice,
       }
     ],
     subtotal,

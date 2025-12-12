@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -8,13 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { InvoiceWithCustomer, TCustomerNames } from "@/schema/types";
-import InvoiceStatusBadge from "./invoice-status-badge";
-import InvoiceActions from "./invoice-actions";
-import { Badge } from "@/components/ui/badge";
-import { useOptimistic } from "react";
 import { cn } from "@/lib/utils";
+import { TCustomerNames } from "@/types/customer";
+import { InvoiceWithCustomer } from "@/types/invoice";
 import { moneyFormatter } from "@/utils/format-money";
+import { useOptimistic } from "react";
+import InvoiceActions from "./invoice-actions";
+import InvoiceStatusBadge from "./invoice-status-badge";
 
 export type OptimisticAction = {
   type: "DELETE" | "UPDATE";
@@ -22,9 +23,9 @@ export type OptimisticAction = {
   status?: string;
 };
 
-type OptimisticInvoice = InvoiceWithCustomer & {
+type OptimisticInvoice = {
   actionStatus?: string;
-};
+} & InvoiceWithCustomer;
 
 type InvoiceTableProps = {
   invoices: InvoiceWithCustomer[];
@@ -74,7 +75,7 @@ const InvoiceTable = ({ invoices, customerNames }: InvoiceTableProps) => {
             <TableCell>INV-{invoice.id}</TableCell>
             <TableCell>{invoice.customer.name}</TableCell>
             <TableCell>{invoice.description}</TableCell>
-            <TableCell>{invoice.due_date}</TableCell>
+            <TableCell>{invoice.dueDate}</TableCell>
             <TableCell>
               {moneyFormatter(parseFloat(invoice.total.toFixed(2))) || 0}
             </TableCell>

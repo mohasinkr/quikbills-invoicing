@@ -1,7 +1,8 @@
+
+import { JSX } from "react";
 import { FormControl, FormField, FormItem, FormLabel } from "./form";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./select";
 import { UseFormReturn } from "react-hook-form";
-
 const FormSelect = ({
   form,
   name,

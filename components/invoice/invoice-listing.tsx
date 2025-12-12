@@ -1,18 +1,16 @@
-import { fetchCustomers } from "@/lib/db/customers/get-customers";
-import { fetchInvoices } from "@/lib/db/invoices/get-invoices";
 import ButtonWithIcon from "@/components/ui/button-with-icon";
-import InvoiceDownload from "../pdf/invoice/download-invoice";
-import InvoiceTable from "./invoice-table";
+import { fetchCustomerNames } from "@/lib/db/customers/get-customers";
+import { fetchInvoices } from "@/lib/db/invoices/get-invoices";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
+import InvoiceDownload from "../pdf/invoice/download-invoice";
+import InvoiceTable from "./invoice-table";
 
 export default async function InvoiceListing() {
   // mapping the customer names to an array
-  const customerNames = await fetchCustomers();
+  const customerNames = await fetchCustomerNames();
 
   const invoices = await fetchInvoices();
-
-  console.log("invoices", "invoices");
 
   if (!invoices) {
     return <div>No invoices found</div>;

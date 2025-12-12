@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import CustomerTableRow from "./customer-table-row";
-import { Customer } from "@/schema/types";
+import { Customer } from "@/types/customer";
 
 export const CustomerTable = ({ customers }: { customers: Customer[] }) => {
   const handleDeleteCustomer = (id: string) => {};
@@ -29,7 +29,7 @@ export const CustomerTable = ({ customers }: { customers: Customer[] }) => {
         <TableBody>
           {customers.map((customer) => (
             <CustomerTableRow
-              key={customer.customer_id}
+              key={customer.customerId}
               customer={customer}
               onDelete={handleDeleteCustomer}
             />

@@ -20,7 +20,7 @@ import LoadingSpinner from "@/components/ui/loading-spinner";
 import MoneyInput from "@/components/ui/money-input";
 import { SelectItem } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { TCustomerNames } from "@/schema/types";
+import { TCustomerNames } from "@/types/customer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -31,22 +31,20 @@ import { z } from "zod";
 
 const itemSchema = z.object({
   item_name: z.string().min(1, "Required"),
-  quantity: z.coerce.number().min(1, "Required"),
-  unit_price: z.coerce.number().min(0.0, "Required"),
-  total: z.coerce.number().min(0.0, "Required"),
+  quantity: z.number().min(1, "Required"),
+  unit_price: z.number().min(0.0, "Required"),
+  total: z.number().min(0.0, "Required"),
 });
 
-const schema = z.object({
+const invoiceFormSchema = z.object({
   items: z.array(itemSchema).min(1, "At least one item is required"),
   description: z.string().optional(),
-  due_date: z.string(),
+  due_date: z.string().min(1, "Due date is required"),
   status: z.enum(["paid", "unpaid", "overdue"]),
-  customer_id: z.string().min(1, "Required"),
-  invoice_id: z.string(), // Auto-generated - adding this for display
-  grand_total: z.coerce.number().min(0.0, "Required"),
+  customer_id: z.string().min(1, "Customer is required"),
+  invoice_id: z.string(),
+  grand_total: z.number().min(0, "Grand total must be positive"),
 });
-
-type InvoiceFormData = z.infer<typeof schema>;
 
 const CreateInvoicePageForm = ({
   customerNames,
@@ -56,8 +54,8 @@ const CreateInvoicePageForm = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const form = useForm<InvoiceFormData>({
-    resolver: zodResolver(schema),
+  const form = useForm<z.infer<typeof invoiceFormSchema>>({
+    resolver: zodResolver(invoiceFormSchema),
     defaultValues: {
       items: [{
         item_name: "",
@@ -89,18 +87,18 @@ const CreateInvoicePageForm = ({
     form.setValue("grand_total", grandTotal);
   }, [grandTotal, form]);
 
-  async function onSubmit(values: InvoiceFormData) {
+  async function onSubmit(values: z.infer<typeof invoiceFormSchema>) {
     setIsSubmitting(true);
     try {
       // Transform items array to match API expectations
       const transformedData = {
         description: values.description || "",
-        due_date: values.due_date,
+        dueDate: values.due_date,
         status: values.status,
-        customer_id: values.customer_id,
+        customerId: values.customer_id,
         // For now, use first item values (will need to update API to handle multiple items)
         quantity: values.items[0]?.quantity || 1,
-        unit_price: values.items[0]?.unit_price || 0,
+        unitPrice: values.items[0]?.unit_price || 0,
         total: values.grand_total,
       };
 

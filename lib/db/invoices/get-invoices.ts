@@ -8,6 +8,5 @@ export const fetchInvoices = async () => {
     orderBy: (fields, operators) => operators.desc(fields.id),
   });
 
-  console.log(result, "invoice results");
   return result;
 };

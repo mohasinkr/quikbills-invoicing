@@ -22,6 +22,7 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { SUCCESS_MESSAGES } from "@/utils/constants";
 import createCustomer from "@/actions/customer/create-customer";
+import { NewCustomer } from "@/types/customer";
 
 const schema = z.object({
   name: z.string().min(1, "Required"),

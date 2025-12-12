@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { TableCell, TableRow } from "@/components/ui/table";
-import type { Customer } from "@/schema/types";
+import type { Customer } from "@/types/customer";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -39,9 +39,9 @@ export default function CustomerTableRow({
         </div>
       </TableCell>
       <TableCell>
-        {customer?.last_purchase
+        {customer?.lastPurchase
           ? // eg: Jan 12, 2025, 2:50 AM
-            format(new Date(customer?.last_purchase), "PPp")
+            format(new Date(customer?.lastPurchase), "PPp")
           : "-"}
       </TableCell>
       <TableCell>
@@ -55,7 +55,7 @@ export default function CustomerTableRow({
             <DropdownMenuItem>Edit</DropdownMenuItem>
             <DropdownMenuItem
               className="text-destructive"
-              onClick={() => onDelete(customer.customer_id)}
+              onClick={() => onDelete(customer?.customerId)}
             >
               Delete
             </DropdownMenuItem>

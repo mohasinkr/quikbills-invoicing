@@ -1,16 +1,17 @@
 "use client";
 
+import { deleteInvoice } from "@/actions/invoice/delete-invoice";
+import { updateInvoice } from "@/actions/invoice/update-invoice";
 import { Button } from "@/components/ui/button";
 import DialogForm from "@/components/ui/dialog-form";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { cn } from "@/lib/utils";
-import { InvoiceWithCustomer, TCustomerNames } from "@/schema/types";
+import { TCustomerNames } from "@/types/customer";
+import { InvoiceWithCustomer } from "@/types/invoice";
 import { CheckIcon, EditIcon, TicketX, XIcon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import EditInvoiceForm from "./edit-invoice-form";
-import { deleteInvoice } from "@/actions/invoice/delete-invoice";
-import { updateInvoice } from "@/actions/invoice/update-invoice";
 import { OptimisticAction } from "./invoice-table";
 
 interface InvoiceActionsProps {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { cloneElement, useState } from "react";
+import React, { cloneElement, JSX, useState } from "react";
 import {
   Dialog,
   DialogContent,
