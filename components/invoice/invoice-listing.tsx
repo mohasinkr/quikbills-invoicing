@@ -1,6 +1,6 @@
 import ButtonWithIcon from "@/components/ui/button-with-icon";
-import { fetchCustomerNames } from "@/lib/db/customers/get-customers";
-import { fetchInvoices } from "@/lib/db/invoices/get-invoices";
+import { fetchCustomerNames } from "@/lib/dal/customers/get-customers";
+import { fetchInvoices } from "@/lib/dal/invoices/get-invoices";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import InvoiceDownload from "../pdf/invoice/download-invoice";

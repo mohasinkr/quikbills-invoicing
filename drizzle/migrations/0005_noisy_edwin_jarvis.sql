@@ -1,0 +1,1 @@
+ALTER TABLE "invoices" DROP COLUMN "owner_id";

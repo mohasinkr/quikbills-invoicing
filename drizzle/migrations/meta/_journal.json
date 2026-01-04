@@ -29,6 +29,27 @@
       "when": 1765140755157,
       "tag": "0003_sudden_firestar",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1765642415349,
+      "tag": "0004_opposite_exiles",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1765642575738,
+      "tag": "0005_noisy_edwin_jarvis",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1765643871336,
+      "tag": "0006_shocking_jack_murdock",
+      "breakpoints": true
     }
   ]
 }

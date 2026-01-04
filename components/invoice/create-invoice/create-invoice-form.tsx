@@ -30,7 +30,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const itemSchema = z.object({
-  item_name: z.string().min(1, "Required"),
+  item_name: z.string().optional(),
   quantity: z.number().min(1, "Required"),
   unit_price: z.number().min(0.0, "Required"),
   total: z.number().min(0.0, "Required"),

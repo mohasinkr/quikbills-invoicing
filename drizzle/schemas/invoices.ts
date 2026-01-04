@@ -18,13 +18,12 @@ export const invoiceStatus = pgEnum("Status", ["paid", "unpaid", "overdue"]);
 export const invoices = pgTable(
   "invoices",
   {
-    id: serial("id").primaryKey(),
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
     customerId: uuid("customer_id")
       .notNull()
       .references(() => customers.customerId, { onDelete: "cascade" }),
     description: text("description"),
     dueDate: date("due_date"),
-    ownerId: uuid("owner_id"),
     quantity: integer("quantity").notNull().default(1),
     status: invoiceStatus("status").notNull().default("unpaid"),
     total: real("total").notNull().default(0.0),

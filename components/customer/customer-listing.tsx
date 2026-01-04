@@ -1,4 +1,4 @@
-import { fetchCustomers } from "@/lib/db/customers/get-customers";
+import { fetchCustomers } from "@/lib/dal/customers/get-customers";
 import CreateCustomerDialog from "./create-customer-dialog";
 import CustomerTable from "./customer-table";
 

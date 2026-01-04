@@ -8,6 +8,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { invoices } from "./invoices";
+import { users } from "./auth";
 
 export const customerStatus = pgEnum("customerStatus", ["active", "inactive"]);
 export const sexEnum = pgEnum("sex", ["male", "female", "other"]);
@@ -23,6 +24,9 @@ export const customers = pgTable(
     sex: sexEnum("sex"),
     status: customerStatus("status").notNull().default("active"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
+    ownerId: uuid("owner_id")
+      .notNull()
+      .references(() => users.id),
     lastPurchase: timestamp("last_purchase"),
   },
   (table) => [

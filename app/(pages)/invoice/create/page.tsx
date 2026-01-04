@@ -1,5 +1,8 @@
 import CreateInvoicePageForm from "@/components/invoice/create-invoice/create-invoice-form";
-import { fetchCustomerNames, fetchCustomers } from "@/lib/db/customers/get-customers";
+import {
+  fetchCustomerNames,
+  fetchCustomers,
+} from "@/lib/dal/customers/get-customers";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,7 +18,7 @@ const CreateInvoicePage = async () => {
   return (
     <div className="container mx-auto py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-primary">Create Invoice</h1>
+        <h1 className="text-primary text-3xl font-bold">Create Invoice</h1>
       </div>
 
       <CreateInvoicePageForm customerNames={customerNames} />
