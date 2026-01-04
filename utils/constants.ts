@@ -71,5 +71,6 @@ export const SIDEBAR_ITEMS = [
 
 export const SUCCESS_MESSAGES = {
   CUSTOMER_CREATED: "Customer created successfully",
+  CUSTOMER_UPDATED: "Customer updated successfully",
   INVOICE_CREATED: "Invoice created successfully",
 };

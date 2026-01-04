@@ -1,44 +1,45 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { db } from "@/drizzle";
+import { customers } from "@/drizzle/schemas";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-const UpdateInvoiceSchema = z
+const UpdateCustomerSchema = z
   .object({
-    id: z.number(), // Required field
-    description: z.string().min(1, "Description is required"),
-    unit_price: z.number().min(0, "Unit price must be positive"),
-    quantity: z.number().min(1, "Quantity must be at least 1"),
-    total: z.number().min(0, "Total must be positive"),
-    due_date: z.string(),
-    status: z.enum(["paid", "unpaid", "overdue"]),
-    customer_id: z.string().min(1, "Customer is required"),
+    customerId: z.string(),
+    name: z.string().min(1, "Name is required"),
+    email: z.string().optional(),
+    phone: z.string().min(1, "Phone is required"),
+    sex: z.enum(["male", "female", "other"]).optional(),
+    address: z.string().optional(),
+    status: z.enum(["active", "inactive"]).optional(),
   })
   .partial({
-    description: true,
-    unit_price: true,
-    quantity: true,
-    total: true,
-    due_date: true,
+    name: true,
+    email: true,
+    phone: true,
+    sex: true,
+    address: true,
     status: true,
-    customer_id: true,
   });
 
 export async function updateCustomer(
-  values: z.infer<typeof UpdateInvoiceSchema>
+  values: z.infer<typeof UpdateCustomerSchema>
 ) {
-  const supabase = await createClient();
+  try {
+    const { customerId, ...updateData } = values;
 
-  const { error } = await supabase
-    .from("customers")
-    .update(values)
-    .eq("id", values.id);
+    await db
+      .update(customers)
+      .set(updateData)
+      .where(eq(customers.customerId, customerId));
 
-  if (error) {
+    revalidatePath("/customers");
+    return { status: 200 };
+  } catch (error) {
+    console.error("Error updating customer:", error);
     throw error;
   }
-
-  revalidatePath("/invoice");
-  return { status: 200 };
 }
