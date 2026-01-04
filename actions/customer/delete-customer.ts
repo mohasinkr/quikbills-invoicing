@@ -1,14 +1,11 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { db } from "@/drizzle";
+import { customers } from "@/drizzle/schemas";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export const deleteCustomer = async (id: number) => {
-  const supabase = await createClient();
-  const res = await supabase.from("customers").delete().eq("id", id);
-  if (res.error) {
-    throw res.error;
-  }
-  revalidatePath("/invoice");
-  return res;
+export const deleteCustomer = async (id: string) => {
+  await db.delete(customers).where(eq(customers.customerId, id));
+  revalidatePath("/customers");
 };

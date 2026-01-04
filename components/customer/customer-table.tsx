@@ -11,10 +11,6 @@ import CustomerTableRow from "./customer-table-row";
 import { Customer } from "@/types/customer";
 
 export const CustomerTable = ({ customers }: { customers: Customer[] }) => {
-  const handleDeleteCustomer = (id: string) => {
-    console.log("delete btn pressed");
-  };
-
   return (
     <div className="rounded-md border">
       <Table>
@@ -33,7 +29,6 @@ export const CustomerTable = ({ customers }: { customers: Customer[] }) => {
             <CustomerTableRow
               key={customer.customerId}
               customer={customer}
-              onDelete={handleDeleteCustomer}
             />
           ))}
         </TableBody>

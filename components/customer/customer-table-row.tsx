@@ -18,12 +18,11 @@ import DeleteCustomerModal from "./delete-customer-modal";
 
 interface CustomerTableRowProps {
   customer: Customer;
-  onDelete: (id: string) => void;
+  onDelete?: (id: string) => void;
 }
 
 export default function CustomerTableRow({
   customer,
-  onDelete,
 }: CustomerTableRowProps) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -83,10 +82,6 @@ export default function CustomerTableRow({
         customer={customer}
         open={deleteModalOpen}
         onOpenChange={setDeleteModalOpen}
-        onConfirm={() => {
-          onDelete(customer?.customerId);
-          setDeleteModalOpen(false);
-        }}
       />
     </>
   );

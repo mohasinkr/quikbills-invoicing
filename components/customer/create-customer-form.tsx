@@ -31,6 +31,7 @@ const schema = z.object({
   sex: z.enum(["male", "female", "other"]),
   address: z.string(),
   status: z.enum(["active", "inactive"]),
+  ownerId: z.string(),
 });
 
 type CustomerFormProps = {
@@ -49,6 +50,7 @@ const CreateCustomerForm = ({ setOpen }: CustomerFormProps) => {
       sex: "male",
       address: "",
       status: "active",
+      ownerId: "",
     },
     mode: "onSubmit",
   });
@@ -59,7 +61,7 @@ const CreateCustomerForm = ({ setOpen }: CustomerFormProps) => {
     try {
       console.table(values);
       const response = await createCustomer(values);
-      if (response.status === 201) {
+      if (response) {
         toast.success(SUCCESS_MESSAGES.CUSTOMER_CREATED);
         form.reset();
       }
